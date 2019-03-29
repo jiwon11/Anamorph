@@ -1,0 +1,25 @@
+body {
+  padding: 10px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#logo {
+  padding : 0px;
+  margin: 0px;
+}
+#logo_img {
+  width: 50px;
+  height: 50px;
+}
+#search_bar_contain {
+  width: 40%;
+}
+.signup-form {
+  margin: 20vh auto auto 20vh;
+  position: relative;
+  width: 80vh;
+}

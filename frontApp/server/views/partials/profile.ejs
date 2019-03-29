@@ -1,0 +1,59 @@
+<h1> User Name : <%= user.username %> </h1>
+<h1> Num of pages : <%= pages.length %> </h1>
+<div>
+<button class="ui labeled icon button">
+    <i class="edit icon"></i>
+    Edit Profile
+</button>
+</div>
+
+<% for(var i = 0; i < pages.length; i++) { %>
+        <div class="page" style="float:left; margin-right:20px;">
+            <input class="page-user-id" type="hidden" value="page.user-id">
+            <input class="page-id" type="hidden" value="page-id">
+            <!--UI card views start-->
+            <a class="ui raised link card" href="/pages/<%= pages[i].id%>">
+              <div class="content">
+                <div class="header"> <%= pages[i].title %> </div>
+                <div class="meta">
+                    <% var minTimes = Math.round(((new Date().getTime() - pages[i].createdAt) / 1000)/60) %>
+                    <% if(minTimes<1) { %>
+                        <span class="right floated time"> just ago </span>
+                    <% } %> 
+                    <% if(minTimes>1 && minTimes<60){ %> <!--시간단위로 보여줌-->
+                        <span class="right floated time"> <%= Math.round((minTimes)) %> Minutes ago </span>
+                    <% } %>
+                    <% if(minTimes>60 && minTimes<1440){ %> <!--시간단위로 보여줌-->
+                        <span class="right floated time"> <%= Math.round((minTimes/60)) %> Hours ago </span>
+                    <% } %>
+                    <% if(minTimes>=1440 && minTimes<10080) {%> <!--일단위로 보여줌-->
+                        <span class="right floated time"> <%= Math.round((minTimes/1440)) %> Days ago </span>
+                    <% } %>
+                    <% if(minTimes>=10080 && minTimes<40320) {%> <!--주단위로 보여줌-->
+                        <span class="right floated time"> <%= Math.round((minTimes/10080)) %> Weeks ago </span>
+                    <% } %>
+                    <span class="category">categorys</span>
+                </div>
+                <div class="image">
+                    <% if(pages[i].img) { %>
+                    <div class="page-img">
+                        <img src="<%= pages[i].img %>" alt='Thumbnail' style="max-width: 100%;">
+                    </div>
+                    <% } %>
+                </div>
+              </div>
+              <div class="extra content">
+                <i class="comments outline icon"></i>
+                    3
+                <i class="heart outline like icon"></i>
+                    17
+                <div class="right floated author">
+                  <img class="ui avatar image" src="/images/avatar/small/matt.jpg"> <%= pages[i].user.username %>
+                </div>
+              </div>
+            </a>
+            <!--UI card views finish-->
+        </div>
+    <% }; %>
+    </div>
+    </div><div style="clear:both:"></div>

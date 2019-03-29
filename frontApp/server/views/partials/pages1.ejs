@@ -1,0 +1,140 @@
+<h1> User Name : <%= user.username %> </h1>
+<h1> Num of pages : <%= pages.length %> </h1>
+<% if(typeof(tags) === 'string') {%>
+    <h1> tag : <%= tags %> </h1>
+<% } else {%>
+    <h1 style="display : inline;"> tags : </h1>
+    <% for(var i=0; i<tags.length; i++){%>
+        <h1 style="display : inline;"> [<%= tags[i].title %>] </h1>
+    <% } %>
+<% } %>
+
+
+<% if(user) {%>
+    <div class="timeline">
+    <div class="upload-btn">
+    <button class="ui right labeled icon button" id="upload-btn">
+    <i class="upload icon"></i>
+    Upload
+    </button>
+    </div>
+    <div class="ui modal" id="upload-modal">
+      <i class="close icon"></i>
+      <div class="header">
+        Upload Model
+      </div>
+      <div class="image content">
+        <div class="image">
+            <div class="ui medium image">
+                <img id="img-preview" src="#" alt="preview" style="display : none;"/>
+            </div>
+        </div>
+        <div class="description">
+            <form class="ui form" action="/pages/post" method="post" enctype="multipart/form-data">
+            <input id="img-url" type="hidden" name="url">
+            <div class="field">
+                <label>Title</label>
+                <input type="text" name="title">
+            </div>
+            <div class="field">
+                <label>content</label>
+                <textarea rows="2"name="content" maxlength="140"></textarea>
+            </div>
+            <div class="field">
+            <label class="img-label" for="img">Image Upload</label>
+            <input id="imgInp" type="file" accept="image/*">
+            <div class="ui sub header">Tags</div>
+            <div class="ui fluid multiple search selection dropdown">
+              <input name="tags" type="hidden">
+              <i class="dropdown icon"></i>
+              <div class="default text">Tags</div>
+              <div class="menu">
+              <% for(var i=0; i<tags.length; i++){%>
+                <div class="item" data-value="<%= tags[i].title %>"> <%= tags[i].title %> </div>
+            <% } %>
+              </div>
+            </div>
+            <div class="ui button" id="tag-clear-btn">
+              Clear
+            </div>
+            </div>
+            
+            <div class="actions">
+            <div class="ui cancel button">Cancel</div>
+            <button class="ui positive right labeled icon button" type="submit">
+            Submit
+            <i class="checkmark icon"></i>
+            </button>
+            </div>
+            </form>
+            </div>
+        </div>
+    </div>
+    <% for(var i = 0; i < pages.length; i++) { %>
+        <div class="page" style="float:left; margin-right:20px;">
+            <!--
+            <div class="page-author"> <%= pages[i].user.username %> </div>
+            <% var follow = user && user.Followings.map(f => f.id).includes(pages[i].user.id); %>
+            <% if(user && user.id !== pages[i].user.id && !follow) { %>
+                <button class="page-follow">Follow</button>
+            <% } %>
+            <% if(user && user.id === pages[i].user.id) { %>
+                <button class="page-delete">Delete</button>
+            <% } %>
+            <% if(user && user.id !== pages[i].user.id && follow) { %>
+                <button class="page-Unfollow">UnFollow</button>
+            <% } %>
+            <div class="page-content"> <%= pages[i].content %> </div>
+            <% if(pages[i].img) { %>
+                <div class="page-img">
+                    <img src="<%= pages[i].img %>" alt='Thumbnail'>
+                </div>
+            <% } %>
+            -->
+            <!--UI card views start-->
+            <a class="ui raised link card" href="/pages/<%= pages[i].id%>">
+              <div class="content">
+                <div class="header"> <%= pages[i].title %> </div>
+                <div class="meta">
+                    <% var minTimes = Math.round(((new Date().getTime() - pages[i].createdAt) / 1000)/60) %>
+                    <% if(minTimes<1) { %>
+                        <span class="right floated time"> just ago </span>
+                    <% } %> 
+                    <% if(minTimes>1 && minTimes<60){ %> <!--시간단위로 보여줌-->
+                        <span class="right floated time"> <%= Math.round((minTimes)) %> Minutes ago </span>
+                    <% } %>
+                    <% if(minTimes>60 && minTimes<1440){ %> <!--시간단위로 보여줌-->
+                        <span class="right floated time"> <%= Math.round((minTimes/60)) %> Hours ago </span>
+                    <% } %>
+                    <% if(minTimes>=1440 && minTimes<10080) {%> <!--일단위로 보여줌-->
+                        <span class="right floated time"> <%= Math.round((minTimes/1440)) %> Days ago </span>
+                    <% } %>
+                    <% if(minTimes>=10080 && minTimes<40320) {%> <!--주단위로 보여줌-->
+                        <span class="right floated time"> <%= Math.round((minTimes/10080)) %> Weeks ago </span>
+                    <% } %>
+                    <span class="category">categorys</span>
+                </div>
+                <div class="image">
+                    <% if(pages[i].img) { %>
+                    <div class="page-img">
+                        <img src="<%= pages[i].img %>" alt='Thumbnail' style="max-width: 100%;">
+                    </div>
+                    <% } %>
+                </div>
+              </div>
+              <div class="extra content">
+                <i class="comments outline icon"></i>
+                    3
+                <i class="heart outline like icon"></i>
+                    17
+                <div class="right floated author">
+                  <img class="ui avatar image" src="/images/avatar/small/matt.jpg"> <%= pages[i].user.username %>
+                </div>
+              </div>
+            </a>
+            <!--UI card views finish-->
+        </div>
+    <% }; %>
+    </div>
+    </div><div style="clear:both:"></div>
+<%}; %>

@@ -1,0 +1,133 @@
+<!--JS Scripts-->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js'></script>
+<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<script src="/javascripts/semantic.min.js"></script>
+<!--JQuery For SemanticUI-->
+<script>
+  $('.ui.dropdown')
+  .dropdown();
+  
+  $('.message .close')
+  .on('click', function() {
+    $(this)
+      .closest('.message')
+      .transition('fade')
+    ;
+  })
+;
+
+  $('.ui.form')
+  .form({
+    fields: {
+      email : {
+        identifier : 'email',
+        rules : [
+          {
+            type   : 'empty',
+            prompt : 'Please enter your email'
+          }
+        ]
+      },
+      name: {
+        identifier: 'name',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Please enter your name'
+          }
+        ]
+      },
+      username: {
+        identifier: 'username',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Please enter a username'
+          }
+        ]
+      },
+      password: {
+        identifier: 'password',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Please enter a password'
+          },
+          {
+            type   : 'minLength[6]',
+            prompt : 'Your password must be at least {ruleValue} characters'
+          }
+        ]
+      },
+    }
+  })
+;
+$(document).ready(function(){
+  $('#upload-btn').click(function(){
+     $('#upload-modal').modal('show');    
+  });
+  });
+function readURL(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          
+          reader.onload = function (e) {
+              $('#img-preview').attr('src', e.target.result);
+          }
+          
+          reader.readAsDataURL(input.files[0]);
+      }
+  }
+$("#imgInp").change(function(){
+      readURL(this);
+  });
+
+  $('.ui.fluid.multiple.search.selection.dropdown').dropdown('setting', {
+    allowAdditions: true,
+    message: {addResult:'Here your customized message: <b>{term}</b>'},
+    action: 'combo'
+  });
+
+  $(function() { 
+    $("input:text").keydown(function(evt) { 
+      if (evt.keyCode == 13) return false; 
+    }); 
+  });
+
+  $('#tag-clear-btn').on('click', function() {
+    $('.ui.fluid.multiple.search.selection.dropdown')
+      .dropdown('clear')
+    ;
+  })
+;
+
+if (document.getElementById('imgInp')) {
+  document.getElementById('imgInp').addEventListener('change', function (e) {
+    var formData = new FormData();
+    console.log(this, this.files);
+    formData.append('img', this.files[0]);
+    console.log(formData.get('img'));
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        var url = JSON.parse(xhr.responseText).url;
+        document.getElementById('img-url').value = url;
+        document.getElementById('img-preview').src = url;
+        document.getElementById('img-preview').style.display = 'inline';
+      } else {
+        console.error(xhr.responseText);
+      }
+    };
+    xhr.open('POST', '/pages/img');
+    xhr.send(formData);
+  });
+}
+    
+</script>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <%- include('../partials/stylesheet') %>
+  </head>
+  <body>
+    
+    <% if(user && user.id) {%>
+    <%- include('../partials/LoginHeader') %> 
+    <%- include('../partials/pages1') %>
+    <%} else {%>
+      <%- include('../partials/nonLoginHeader') %> 
+      <%- include('./signup.ejs') %>
+    <% } %>
+    <% if(joinError) {%>
+      <%= joinError %>
+    <% } %>
+
+    <%- include('../partials/footer') %>
+    <%- include('../partials/javascript') %>

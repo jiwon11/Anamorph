@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <%- include('../partials/stylesheet') %>
+  </head>
+  <body>
+    
+    <% if(user && user.id) {%>
+    <%- include('../partials/LoginHeader') %> 
+    <%- include('../partials/profile')%>
+    <%} else {%>
+      <%- include('../partials/nonLoginHeader') %> 
+      <%- include('../partials/firstHome') %>
+    <% } %>
+
+    <%- include('../partials/footer') %>
+    <%- include('../partials/javascript') %>

@@ -1,0 +1,20 @@
+<div class="signup-form">
+  <form class="ui form segment" action='/process/signup' method='post'>
+    <div class="two fields"> 
+      <div class="field">
+        <label>Email</label>
+        <input type="email" name="email">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" name="password">
+      </div>
+      <div class="field">
+        <label>Username</label>
+        <input type="text" name="username">
+      </div>
+    </div>
+    <div class="ui primary submit button">Submit</div>
+    <div class="ui clear button" onclick="$('.ui.form').form('clear')">Clear</div>
+    <div class="ui error message"></div>
+</div>
