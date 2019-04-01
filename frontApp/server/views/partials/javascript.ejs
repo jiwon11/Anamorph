@@ -71,7 +71,19 @@ $(document).ready(function(){
      $('#upload-modal').modal('show');    
   });
   });
-function readURL(input) {
+
+$(document).ready(function(){
+  $('#update-page').click(function(){
+     $('#update-modal').modal('show');    
+  });
+  });
+
+$(document).ready(function(){
+  $('#EditProfile-btn').click(function(){
+     $('#EditProfile-modal').modal('show');    
+  });
+  });
+function readURL1(input) {
       if (input.files && input.files[0]) {
           var reader = new FileReader();
           
@@ -82,9 +94,23 @@ function readURL(input) {
           reader.readAsDataURL(input.files[0]);
       }
   }
+  function readURL2(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        
+        reader.onload = function (e) {
+            $('#Userimg-preview').attr('src', e.target.result);
+        }
+        
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 $("#imgInp").change(function(){
-      readURL(this);
+      readURL1(this);
   });
+  $("#Userimg").change(function(){
+    readURL2(this);
+});
 
   $('.ui.fluid.multiple.search.selection.dropdown').dropdown('setting', {
     allowAdditions: true,
@@ -123,6 +149,52 @@ if (document.getElementById('imgInp')) {
       }
     };
     xhr.open('POST', '/pages/img');
+    xhr.send(formData);
+  });
+}
+
+if (document.getElementById('Userimg')) {
+  document.getElementById('Userimg').addEventListener('change', function (e) {
+    var formData = new FormData();
+    console.log(this, this.files);
+    formData.append('img', this.files[0]);
+    console.log(formData.get('img'));
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        console.log(xhr.responseText);
+        var url = JSON.parse(xhr.responseText).url;
+        document.getElementById('Userimg-url').value = url;
+        document.getElementById('Userimg-preview').src = url;
+        document.getElementById('Userimg-preview').style.display = 'inline';
+      } else {
+        console.error(xhr.responseText);
+      }
+    };
+    xhr.open('POST', '/users/profileImg');
+    xhr.send(formData);
+  });
+}
+
+if (document.getElementById('updateImgInp')) {
+  document.getElementById('updateImgInp').addEventListener('change', function (e) {
+    var formData = new FormData();
+    console.log(this, this.files);
+    formData.append('img', this.files[0]);
+    console.log(formData.get('img'));
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        console.log(xhr.responseText);
+        var url = JSON.parse(xhr.responseText).url;
+        document.getElementById('updateImg-url').value = url;
+        document.getElementById('updateImg-preview').src = url;
+        document.getElementById('updateImg-preview').style.display = 'inline';
+      } else {
+        console.error(xhr.responseText);
+      }
+    };
+    xhr.open('POST', `/pages/img/update`);
     xhr.send(formData);
   });
 }

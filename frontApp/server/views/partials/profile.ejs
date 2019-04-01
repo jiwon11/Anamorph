@@ -1,12 +1,48 @@
 <h1> User Name : <%= user.username %> </h1>
-<h1> Num of pages : <%= pages.length %> </h1>
+<h1> <%= user.username %>'s upload Num of pages : <%= pages.length %> </h1>
 <div>
-<button class="ui labeled icon button">
+<button class="ui labeled icon button" id="EditProfile-btn">
     <i class="edit icon"></i>
     Edit Profile
 </button>
 </div>
-
+<div class="ui modal" id="EditProfile-modal">
+      <i class="close icon"></i>
+      <div class="header">
+      Edit Profile
+      </div>
+      <div class="image content">
+        <div class="image">
+            <div class="ui medium image">
+                <img id="Userimg-preview" src="" alt="preview" style="display : none;"/>
+            </div>
+        </div>
+        <div class="description">
+            <form class="ui form" action="/users/update" method="post" enctype="multipart/form-data">
+            <input id="Userimg-url" type="hidden" name="url">
+            <div class="field">
+                <label>Email</label>
+                <input type="text" name="email" value="<%= user.email %>">
+            </div>
+            <div class="field">
+                <label>Username</label>
+                <input type="text" name="username" value="<%= user.username %>">
+            </div>
+            <div class="field">
+            <label class="img-label" for="img">Profile Image</label>
+            <input id="Userimg" type="file" accept="image/*">
+            <div class="actions">
+            <div class="ui cancel button">Cancel</div>
+            <button class="ui positive right labeled icon button" type="submit">
+            Submit
+            <i class="checkmark icon"></i>
+            </button>
+            </div>
+            </form>
+            </div>
+        </div>
+    </div>     
+</div>       
 <% for(var i = 0; i < pages.length; i++) { %>
         <div class="page" style="float:left; margin-right:20px;">
             <input class="page-user-id" type="hidden" value="page.user-id">
@@ -48,7 +84,7 @@
                 <i class="heart outline like icon"></i>
                     17
                 <div class="right floated author">
-                  <img class="ui avatar image" src="/images/avatar/small/matt.jpg"> <%= pages[i].user.username %>
+                  <img class="ui avatar image" src="<%= user.img %>"> <%= user.username %>
                 </div>
               </div>
             </a>

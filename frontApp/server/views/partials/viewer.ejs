@@ -19,7 +19,7 @@
             </section>
             <div class="tab_item" style="margin: 20px;">
                 <h1 class="ui header">
-                    <img src="../images/logo.png" class="ui circular small image" style="margin-right : 10px;">
+                    <img src="<%= page.user.img %>" class="ui circular small image" style="margin-right : 10px; cursor:pointer;" onclick="location.href='/users/<%=page.user.username%>';">
                     <%= page.user.username %>
                     <% if(user && user.id === page.user.id) {%>
                     <input id="page-user-id" type="hidden" value="<%= page.user.username %>">
@@ -28,12 +28,14 @@
                     <div class="ui button">Menu</div>
                     <div class="ui floating dropdown icon button">
                       <i class="dropdown icon"></i>
-                      <div class="menu">
-                        <div class="item"><i class="edit icon"></i> Edit Post</div>
-                        <form action="/pages/<%= page.id %>/delete" method="post">
-                        <input type="hidden" name="id" value="<%= page.id %>">
-                        <input type="submit" value="Remove Post">
-                        </form>
+                      <div class="menu">     
+                        <div class="item" id="update-page"><i class="edit icon"></i> Edit Post</div>
+                        <div class="item">
+                            <form name="delete-page"action="/pages/<%= page.id %>/delete" method="post">
+                                <input type="hidden" name="id" value="<%= page.id %>">
+                                <div class="item" onClick="document.forms['delete-page'].submit();"><i class="delete icon"></i> Remove Post</div>
+                            </form>
+                        </div>
                         <div class="item"><i class="hide icon"></i> Hide Post</div>
                       </div>
                     </div>
@@ -61,6 +63,60 @@
             </div>
         </aside>
     </div>
+    <!--Page Update Modal-->
+    <div class="ui modal" id="update-modal">
+      <i class="close icon"></i>
+      <div class="header">
+        Update Page
+      </div>
+      <div class="image content">
+        <div class="image">
+            <div class="ui medium image">
+                <img id="updateImg-preview" src="<%=page.img%>" alt="preview" style="display : inline;"/>
+            </div>
+        </div>
+        <div class="description">
+            <form class="ui form" action="/pages/<%= page.id %>/update" method="post" enctype="multipart/form-data">
+            <input id="updateImg-url" type="hidden" name="url">
+            <div class="field">
+                <label>Title</label>
+                <input type="text" name="title" value="<%= page.title %>">
+            </div>
+            <div class="field">
+                <label>content</label>
+                <textarea rows="2"name="content" maxlength="140"><%= page.content %></textarea>
+            </div>
+            <div class="field">
+            <label class="img-label" for="img">Image Upload</label>
+            <input id="updateImgInp" type="file" accept="image/*">
+            <div class="ui sub header">Tags</div>
+            <div class="ui fluid multiple search selection dropdown">
+              <input name="tags" type="hidden">
+              <i class="dropdown icon"></i>
+              <div class="default text">Tags</div>
+              <div class="menu">
+              <% for(var i=0; i<tags.length; i++){%>
+                <div class="item" data-value="<%= tags[i].title %>"> <%= tags[i].title %> </div>
+            <% } %>
+              </div>
+            </div>
+            <div class="ui button" id="tag-clear-btn">
+              Clear
+            </div>
+            </div>
+            </div>
+            <div class="actions">
+            <div class="ui cancel button">Cancel</div>
+            <button class="ui positive right labeled icon button" type="submit">
+            Submit
+            <i class="checkmark icon"></i>
+            </button>
+            </div>
+            </form>
+            </div>
+        </div>
+    </div>
+    <!--Page Update Modal-->
 
     <!-- 콘텐츠 -->
     <style>

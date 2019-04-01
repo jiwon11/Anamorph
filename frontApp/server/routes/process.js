@@ -3,6 +3,7 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const { isLoggedIn,isNotLoggedIn } = require('./middlewares');
 const { User } = require('../../models');
+const gravatar = require('gravatar');
 
 const router = express.Router();
 router.post('/signup', isNotLoggedIn, async (req, res, next) => {
@@ -14,10 +15,12 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {
             return res.redirect('/signup');
         }
         const hash = await bcrypt.hash(password, 12);
+        const userGravatar = gravatar.url(email,{s:'80',r:'x',d:'retro'},true);
         await User.create({
             email,
             username,
             password : hash,
+            img : userGravatar,
         });
         return res.redirect('/');
     } catch (error) {

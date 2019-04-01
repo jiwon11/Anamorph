@@ -2,6 +2,8 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+// get gravatar icon from email
+const gravatar = require('gravatar');
 
 const { Page,Hashtag,User } = require('../../models');
 const { isLoggedIn } = require('./middlewares');
@@ -62,7 +64,7 @@ router.get('/', (req, res, next) => {
     Page.findAll({
         include : {
             model : User,
-            attributes : ['id', 'username'],
+            attributes : ['id', 'username','img'],
         },
         order : [['createdAt','DESC']],
     })
@@ -72,6 +74,7 @@ router.get('/', (req, res, next) => {
                 title : 'Anamorph',
                 pages : pages,
                 user : req.user,
+                gravatar: gravatar.url(req.user.email,{s:'80',r:'x',d:'retro'},true),
                 tags : tags,
                 loginError : req.flash('loginError'),
             });
@@ -93,16 +96,19 @@ router.get('/:pageId', async (req, res, next) => {
         where : { id : pageId },
         include : [{
             model : User,
-            attributes : ['id', 'username'],
+            attributes : ['id', 'username','img'],
         }, {
             model : Hashtag,
         }
     ], 
      });
+    const tags = await Hashtag.findAll({ });
     return res.render('pageView', {
         title : `${page.title} | Anamorph`,
         user : req.user,
         page : page, 
+        tags : tags,
+        gravatar: gravatar.url(req.user.email,{s:'80',r:'x',d:'retro'},true),
     });
     } catch (error) {
     console.error(error);
@@ -120,6 +126,51 @@ router.post('/:id/delete', isLoggedIn, async (req, res, next) => {
             console.err(err);
             next(err);
         });
+});
+
+router.post('/img/update',isLoggedIn, upload.single('img'), (req,res) => {
+    console.log(req.file);
+    res.json({ url : `/img/${req.file.filename}`});
+});
+
+router.post('/:pageId/update', isLoggedIn,upload2.none(), async (req, res, next) => {
+    try {
+        const page = await Page.findOne({
+        where : { id : req.params.pageId },
+        include : [{
+            model : User,
+            attributes : ['id', 'username','img'],
+        }, {
+            model : Hashtag,
+        }
+    ], 
+        });
+        page.update({
+            title : req.body.title,
+            content : req.body.title,
+            img : req.body.url,
+        })
+        .then(async (page) => {
+            const Hashtags = req.body.tags;
+            const splitHashtags = Hashtags.split(',');
+            console.log(splitHashtags);
+            if (splitHashtags) {
+                const result = await Promise.all(splitHashtags.map(tag => Hashtag.findOrCreate({
+                    where : { title : tag.toLowerCase() },
+                })));
+                await page.setHashtags(result.map(r => r[0]));
+            }
+        res.redirect('/pages');
+        }) 
+        .catch((err) => {
+            console.error(err);
+            next(err);
+        });
+        
+    } catch (error) {
+        console.error(error);
+        return next(error);
+        }
 });
 
 module.exports = router;
