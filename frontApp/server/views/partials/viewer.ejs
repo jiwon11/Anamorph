@@ -19,11 +19,12 @@
             </section>
             <div class="tab_item" style="margin: 20px;">
                 <h1 class="ui header">
+                    <input id="myId" type="hidden" value="<%= user.id %>">
+                    <input id="page-user-id" type="hidden" value="<%= page.user.id %>">
+                    <input id="page-id" type="hidden" value="<%= page.id %>">
                     <img src="<%= page.user.img %>" class="ui circular small image" style="margin-right : 10px; cursor:pointer;" onclick="location.href='/users/<%=page.user.username%>';">
                     <%= page.user.username %>
                     <% if(user && user.id === page.user.id) {%>
-                    <input id="page-user-id" type="hidden" value="<%= page.user.username %>">
-                    <input id="page-id" type="hidden" value="<%= page.id %>">
                     <div class="ui black buttons" style="margin-left : 30px;">
                     <div class="ui button">Menu</div>
                     <div class="ui floating dropdown icon button">
@@ -40,6 +41,19 @@
                       </div>
                     </div>
                   </div>
+                    <% } %>
+                    <% const follow = user && user.Followings.map(f => f.id).includes(page.user.id); %>
+                    <% if(user && user.id !== page.user.id && !follow) {%>
+                        <button class="ui active button" id="userFollow">
+                          <i class="user icon"></i>
+                          Follow
+                        </button>
+                    <% } %>
+                    <% if(user && user.id !== page.user.id && follow) {%>
+                        <button class="ui active button" id="userUnfollow">
+                        <i class="user icon"></i>
+                        Followed
+                        </button>
                     <% } %>
                     <h3 class="ui left aligned header">
                     <div class="sub header"> <%= page.createdAt.toDateString() %> </div>

@@ -198,7 +198,94 @@ if (document.getElementById('updateImgInp')) {
     xhr.send(formData);
   });
 }
-    
+var el = document.getElementById('userFollow');
+if(el){
+  el.addEventListener('click', function (e) {
+    console.log(document.querySelector('#myId').value);
+    console.log(document.querySelector('#page-user-id').value);
+    var isLoggedIn = document.querySelector('#myId');
+      if (isLoggedIn) {
+        var userId = document.querySelector('#page-user-id').value;
+        var myId = isLoggedIn.value;
+        if (userId !== myId) {
+          if (confirm('팔로잉하시겠습니까?')) event.preventDefault(); {
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+              if (xhr.status === 200) {
+                location.reload(); 
+              } else {
+                console.error(xhr.responseText);
+              }
+            };
+            xhr.open('POST', '/users/' + userId + '/follow');
+            xhr.send();
+          }
+        }
+      }
+    });
+}
+var el1 = document.querySelector('#userUnfollow');
+if(el1) {
+  el1.addEventListener('click', function () {
+        var isLoggedIn = document.querySelector('#myId');
+        if (isLoggedIn) {
+          var userId = document.querySelector('#page-user-id').value;
+          var myId = isLoggedIn.value;
+          if (userId !== myId) {
+            if (confirm('언팔로잉하시겠습니까?')) event.preventDefault(); {
+              var xhr = new XMLHttpRequest();
+              xhr.onload = function () {
+                if (xhr.status === 200) {
+                  location.reload();
+                } else {
+                  console.error(xhr.responseText);
+                }
+              };
+              xhr.open('POST', '/users/' + userId + '/unfollow');
+              xhr.send();
+            }
+          }
+        }
+      });
+}
+
+var el1 = document.querySelector('#tagFollow');
+if(el1) {
+  el1.addEventListener('click', function () {
+        var tag = document.querySelector('#tag-title').value;
+            if (confirm('태그를 팔로잉하시겠습니까?')) event.preventDefault(); {
+              var xhr = new XMLHttpRequest();
+              xhr.onload = function () {
+                if (xhr.status === 200) {
+                  location.reload();
+                } else {
+                  console.error(xhr.responseText);
+                }
+              };
+              xhr.open('POST', '/tag/' + tag + '/follow');
+              xhr.send();
+          }
+      });
+}
+
+var el1 = document.querySelector('#tagUnFollow');
+if(el1) {
+  el1.addEventListener('click', function () {
+        var tag = document.querySelector('#tag-title').value;
+            if (confirm('태그를 언팔로잉하시겠습니까?')) event.preventDefault(); {
+              var xhr = new XMLHttpRequest();
+              xhr.onload = function () {
+                if (xhr.status === 200) {
+                  location.reload();
+                } else {
+                  console.error(xhr.responseText);
+                }
+              };
+              xhr.open('POST', '/tag/' + tag + '/unfollow');
+              xhr.send();
+          }
+      });
+}
 </script>
 
 </body>

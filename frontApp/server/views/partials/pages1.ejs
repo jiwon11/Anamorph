@@ -1,14 +1,30 @@
 <h1> User Name : <%= user.username %> </h1>
 <h1> Num of pages : <%= pages.length %> </h1>
 <% if(typeof(tags) === 'string') {%>
+<h1><%= follow.length %></h1>
+<% } %>
+<% if(typeof(tags) === 'string') {%>
     <h1> tag : <%= tags %> </h1>
+    <input id="tag-title" type="hidden" value="<%= tags %>">
 <% } else {%>
     <h1 style="display : inline;"> tags : </h1>
     <% for(var i=0; i<tags.length; i++){%>
         <h1 style="display : inline;"> [<%= tags[i].title %>] </h1>
     <% } %>
 <% } %>
-
+<% if(typeof(tags) === 'string') {%>
+    <%if (follow.length === 1) {%>
+        <button class="ui active button" id="tagUnFollow">
+            <i class="tag icon"></i>
+            Following
+          </button>
+    <% } else {%>
+    <button class="ui active button" id="tagFollow">
+              <i class="tag icon"></i>
+              Follow
+            </button>
+    <% } %>
+<% } %>
 
 <% if(user) {%>
     <div class="timeline">

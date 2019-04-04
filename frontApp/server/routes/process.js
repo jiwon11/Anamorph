@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/signup', isNotLoggedIn, async (req, res, next) => {
     const {email, username, password } = req.body;
     try {
-        const exUser = await User.find({ Where : { email } });
+        const exUser = await User.findOne({ where : { email } });
         if(exUser) {
             req.flash('joinError', 'You are already a member');
             return res.redirect('/signup');
@@ -49,7 +49,7 @@ router.post('/login',isNotLoggedIn, (req, res, next) => {
     }) (req, res, next);
 });
 router.get('/logout',isLoggedIn, (req,res) => {
-    req.logOut();
+    req.logout();
     req.session.destroy();
     res.redirect('/');
 });

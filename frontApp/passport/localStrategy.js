@@ -9,7 +9,7 @@ module.exports = (passport) => {
         passwordField : 'password',
     }, async (email, password, done) => {
         try {
-            const exUser = await User.find({ Where : { email } });
+            const exUser = await User.findOne({ where : { email: email } });
             if (exUser) {
                 const result = await bcrypt.compare(password, exUser.password);
                 if (result) {

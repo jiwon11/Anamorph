@@ -83,7 +83,6 @@ router.post('/update', isLoggedIn, upload2.none(), async (req, res, next) => {
   
   });
 
-    /*
 router.post('/:id/follow', isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.find({ where : { id : req.user.id } });
@@ -94,5 +93,16 @@ router.post('/:id/follow', isLoggedIn, async (req, res, next) => {
     next(error);
   }
 });
-*/
+
+router.post('/:id/unfollow', isLoggedIn, async (req, res, next) => {
+  try{
+      const user = await User.find({ where : { id : req.user.id } });
+      await user.removeFollowing(parseInt(req.params.id, 10));
+      res.send('sucess');
+  } catch (error) {
+      console.error(error);
+      next(error);
+  }
+});
+
 module.exports = router;
