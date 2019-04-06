@@ -133,6 +133,9 @@ $("#imgInp").change(function(){
 $('.ui.accordion')
   .accordion()
 ;
+$('.special.cards .image').dimmer({
+  on: 'hover'
+});
 
 if (document.getElementById('imgInp')) {
   document.getElementById('imgInp').addEventListener('change', function (e) {
@@ -211,7 +214,33 @@ if(el){
         var userId = document.querySelector('#page-user-id').value;
         var myId = isLoggedIn.value;
         if (userId !== myId) {
-          if (confirm('팔로잉하시겠습니까?')) event.preventDefault(); {
+          if (confirm('팔로잉하시겠습니까?')) {
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+              if (xhr.status === 200) {
+                location.reload(); 
+              } else {
+                console.error(xhr.responseText);
+              }
+            };
+            xhr.open('POST', '/users/' + userId + '/follow');
+            xhr.send();
+          }
+        }
+      }
+    });
+}
+var el = document.getElementById('userFollow1');
+if(el){
+  el.addEventListener('click', function (e) {
+    console.log(document.querySelector('#myId').value);
+    console.log(document.querySelector('#page-user-id').value);
+    var isLoggedIn = document.querySelector('#myId');
+      if (isLoggedIn) {
+        var userId = document.querySelector('#page-user-id').value;
+        var myId = isLoggedIn.value;
+        if (userId !== myId) {
+          if (confirm('팔로잉하시겠습니까?')) {
             var xhr = new XMLHttpRequest();
             xhr.onload = function () {
               if (xhr.status === 200) {
@@ -235,7 +264,31 @@ if(el1) {
           var userId = document.querySelector('#page-user-id').value;
           var myId = isLoggedIn.value;
           if (userId !== myId) {
-            if (confirm('언팔로잉하시겠습니까?')) event.preventDefault(); {
+            if (confirm('언팔로잉하시겠습니까?')) {
+              var xhr = new XMLHttpRequest();
+              xhr.onload = function () {
+                if (xhr.status === 200) {
+                  location.reload();
+                } else {
+                  console.error(xhr.responseText);
+                }
+              };
+              xhr.open('POST', '/users/' + userId + '/unfollow');
+              xhr.send();
+            }
+          }
+        }
+      });
+}
+var el1 = document.querySelector('#userUnFollow1');
+if(el1) {
+  el1.addEventListener('click', function () {
+        var isLoggedIn = document.querySelector('#myId');
+        if (isLoggedIn) {
+          var userId = document.querySelector('#page-user-id').value;
+          var myId = isLoggedIn.value;
+          if (userId !== myId) {
+            if (confirm('언팔로잉하시겠습니까?')) {
               var xhr = new XMLHttpRequest();
               xhr.onload = function () {
                 if (xhr.status === 200) {

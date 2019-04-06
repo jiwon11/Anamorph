@@ -1,7 +1,7 @@
 <h2> <%=user.username %>'s List of following </h2>
 <% if(user.Followings) {%>
     <ol>
-    <% for(var i=0;i<user.Followings.length; i++) { %>
+    <% for(var i=0;i<followings.length; i++) { %>
         <li> <%= user.Followings[i].username %> </li>
     <% } %>
     </ol>
@@ -9,17 +9,38 @@
 
 <h2> <%=user.username %>'s List of follower </h2>
 <% if(user.Followers) {%>
-    <ol>
-    <% for(var i=0;i<user.Followers.length; i++) { %>
-        <li> <a href="/users/<%= user.Followers[i].username %>"><%= user.Followers[i].username %> </a></li>
-    <% } %>
-    </ol>
+    <% followers.forEach((follower) => { %>
+    <% const follow = user && user.Followings.map(f => f.id).includes(follower.id); %>
+    <input id="myId" type="hidden" value="<%= user.id %>">
+    <input id="page-user-id" type="hidden" value="<%= follower.id %>">
+    <div class="ui special cards">
+        <div class="card">
+            <div class="blurring dimmable image">
+                <div class="ui dimmer">
+                    <div class="content">
+                        <div class="center">
+                            <%if(user && user.id !== follower.id && !follow) {%>
+                            <div class="ui inverted button" id="userFollow1">Follow</div>
+                            <% } else { %>
+                            <div class="ui inverted button" id="userUnFollow1">UnFollow</div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            <img src="<%= follower.img %>">
+            </div>
+            <div class="content">
+                <div class="header"><%= follower.username %></div>
+            </div>
+    </div>
+  </div>
+  <% }); %>
 <% } %>
 
 <h2> <%=user.username %>'s List of tags followed</h2>
 <% followTag.forEach((tag) => {%>
     <div class="ui message">
-    <p> <%= tag.title %> </p>
+    <h3> <%= tag.title %> </h3>
     </div>
     <% tag.pages.forEach((page) => {%>
     <div class="page" style="float:left; margin-right:20px;">
