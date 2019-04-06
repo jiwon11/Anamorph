@@ -62,10 +62,13 @@ router.post('/post', isLoggedIn, upload2.none(), async (req, res, next) => {
 
 router.get('/', (req, res, next) => {
     Page.findAll({
-        include : {
+        include : [{
             model : User,
             attributes : ['id', 'username','img'],
-        },
+        }, {
+            model : Hashtag,
+            attributes : ['title'],
+        } ],
         order : [['createdAt','DESC']],
     })
     .then (async (pages) => {

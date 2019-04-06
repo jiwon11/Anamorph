@@ -1,0 +1,89 @@
+<h2> <%=user.username %>'s List of following </h2>
+<% if(user.Followings) {%>
+    <ol>
+    <% for(var i=0;i<user.Followings.length; i++) { %>
+        <li> <%= user.Followings[i].username %> </li>
+    <% } %>
+    </ol>
+<% } %>
+
+<h2> <%=user.username %>'s List of follower </h2>
+<% if(user.Followers) {%>
+    <ol>
+    <% for(var i=0;i<user.Followers.length; i++) { %>
+        <li> <a href="/users/<%= user.Followers[i].username %>"><%= user.Followers[i].username %> </a></li>
+    <% } %>
+    </ol>
+<% } %>
+
+<h2> <%=user.username %>'s List of tags followed</h2>
+<% followTag.forEach((tag) => {%>
+    <div class="ui message">
+    <p> <%= tag.title %> </p>
+    </div>
+    <% tag.pages.forEach((page) => {%>
+    <div class="page" style="float:left; margin-right:20px;">
+    <!--UI card views start-->
+    <div class="ui raised card">
+      <div class="content">
+        <div class="header" onclick="location.href='/pages/<%= page.id %>'" style="cursor:pointer;"> <%= page.title %> </div>
+        <div class="meta">
+            <% var minTimes = Math.round(((new Date().getTime() - page.createdAt) / 1000)/60) %>
+            <% if(minTimes<1) { %>
+                <span class="right floated time"> just ago </span>
+            <% } %> 
+            <% if(minTimes>1 && minTimes<60){ %> <!--시간단위로 보여줌-->
+                <span class="right floated time"> <%= Math.round((minTimes)) %> Minutes ago </span>
+            <% } %>
+            <% if(minTimes>60 && minTimes<1440){ %> <!--시간단위로 보여줌-->
+                <span class="right floated time"> <%= Math.round((minTimes/60)) %> Hours ago </span>
+            <% } %>
+            <% if(minTimes>=1440 && minTimes<10080) {%> <!--일단위로 보여줌-->
+                <span class="right floated time"> <%= Math.round((minTimes/1440)) %> Days ago </span>
+            <% } %>
+            <% if(minTimes>=10080 && minTimes<40320) {%> <!--주단위로 보여줌-->
+                <span class="right floated time"> <%= Math.round((minTimes/10080)) %> Weeks ago </span>
+            <% } %>
+            <!--tag 아코디언-->
+            <div class="tag" style="width : 100px;">
+                <div class="ui styled fluid accordion">
+                    <div class="title">
+                      <i class="dropdown icon"></i>
+                      Tags
+                    </div>
+                    <div class="content" style="padding:0px;text-align: center;">
+                      <div class="transition hidden">
+                        <% for(var i=0; i<page.hashtags.length;i++) {%>
+                            <span class="ui black labels">
+                                <a class="ui label" href="/tag/<%= page.hashtags[i].title %>">
+                                    <%= page.hashtags[i].title %>
+                                </a>
+                            </span>
+                        <% } %>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="image" onclick="location.href='/pages/<%= page.id %>'" style="cursor:pointer;">
+            <% if(page.img) { %>
+            <div class="page-img">
+                <img src="<%= page.img %>" alt='Thumbnail' style="max-width: 100%;">
+            </div>
+            <% } %>
+        </div>
+      </div>
+      <div class="extra content">
+        <i class="comments outline icon"></i>
+            3
+        <i class="heart outline like icon"></i>
+            17
+        <div class="right floated author" onclick="location.href='/users/<%= page.user.username %>'" style="cursor:pointer;">
+            <img class="ui avatar image" src="<%= page.user.img %>"> <%= page.user.username %>
+        </div>
+      </div>
+    </div>
+    <!--UI card views finish-->
+</div>
+    <% });%>
+<% }); %>
