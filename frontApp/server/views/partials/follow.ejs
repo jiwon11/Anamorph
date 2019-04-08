@@ -1,10 +1,31 @@
 <h2> <%=user.username %>'s List of following </h2>
 <% if(user.Followings) {%>
-    <ol>
-    <% for(var i=0;i<followings.length; i++) { %>
-        <li> <%= user.Followings[i].username %> </li>
-    <% } %>
-    </ol>
+    <% followings.forEach((following) => { %>
+    <% const follow = user && user.Followings.map(f => f.id).includes(following.id); %>
+    <input id="myId" type="hidden" value="<%= user.id %>">
+    <input id="page-user-id" type="hidden" value="<%= following.id %>">
+    <div class="ui special cards">
+        <div class="card">
+            <div class="blurring dimmable image">
+                <div class="ui dimmer">
+                    <div class="content">
+                        <div class="center">
+                            <%if(user && user.id !== following.id && !follow) {%>
+                            <div class="ui inverted button"><div class="userFollow">Follow</div></div>
+                            <% } else { %>
+                            <div class="ui inverted button"><div class="userUnFollow">UnFollow</div></div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            <img src="<%= following.img %>">
+            </div>
+            <div class="content">
+                <div class="header"><%= following.username %></div>
+            </div>
+    </div>
+  </div>
+  <% }); %>
 <% } %>
 
 <h2> <%=user.username %>'s List of follower </h2>

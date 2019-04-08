@@ -342,6 +342,155 @@ if(el1) {
           }
       });
 }
+var el1 = document.querySelector('.userFollow');
+if(el1) {
+  el1.addEventListener('click', function () {
+        var isLoggedIn = document.querySelector('#myId');
+        if (isLoggedIn) {
+          var userId = document.querySelector('#page-user-id').value;
+          var myId = isLoggedIn.value;
+          if (userId !== myId) {
+            if (confirm('언팔로잉하시겠습니까?')) {
+              var xhr = new XMLHttpRequest();
+              xhr.onload = function () {
+                if (xhr.status === 200) {
+                  location.reload();
+                } else {
+                  console.error(xhr.responseText);
+                }
+              };
+              xhr.open('POST', '/users/' + userId + '/follow');
+              xhr.send();
+            }
+          }
+        }
+      });
+}
+var el1 = document.querySelector('.userUnFollow');
+if(el1) {
+  el1.addEventListener('click', function () {
+        var isLoggedIn = document.querySelector('#myId');
+        if (isLoggedIn) {
+          var userId = document.querySelector('#page-user-id').value;
+          var myId = isLoggedIn.value;
+          if (userId !== myId) {
+            if (confirm('언팔로잉하시겠습니까?')) {
+              var xhr = new XMLHttpRequest();
+              xhr.onload = function () {
+                if (xhr.status === 200) {
+                  location.reload();
+                } else {
+                  console.error(xhr.responseText);
+                }
+              };
+              xhr.open('POST', '/users/' + userId + '/unfollow');
+              xhr.send();
+            }
+          }
+        }
+      });
+}
+document.getElementById('tab_comment').addEventListener('click', function () {
+    getComment();
+  });
+
+document.getElementById('commentForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var pageId = e.target.pageId.value;
+  var userId = e.target.commentUserId.value;
+  var comment = e.target.content.value;
+  if (!userId) {
+    return alert('아이디를 입력하세요');
+  }
+  if (!comment) {
+    return alert('댓글을 입력하세요');
+  }
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function () {
+    if (xhr.status === 201) {
+      console.log(xhr.responseText);
+      getComment();
+    } else {
+      console.error(xhr.responseText);
+    }
+  };
+  xhr.open('POST', '/comment/post');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(JSON.stringify({pageId : pageId, userId: userId, comment: comment }));
+});
+
+function getComment() {
+  console.log('ajax load comment...');
+  var xhr = new XMLHttpRequest();
+  var pageId = document.querySelector('#page-id').value;
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      var comments = JSON.parse(xhr.responseText);
+      var commentbody = document.querySelector('#comment-list');
+      commentbody.innerHTML = '';
+      comments.forEach((comment) => {
+        var commentForm = `
+        <a class="avatar">
+          <img src=" ${comment.user.img}">
+        </a>
+        <div class="content">
+          <a class="author"> ${comment.user.username} </a>
+          <div class="metadata">
+            <span class="date"> ${comment.createdAt} </span>
+          </div>
+          <div class="text">
+            ${comment.comment}
+          </div>
+          <div class="actions">
+            <a class="reply">Reply</a>
+          </div>
+        `;
+        commentbody.insertAdjacentHTML('beforeend', commentForm);
+        /* 
+        var edit = document.createElement('button');
+        edit.textContent = '수정';
+        edit.addEventListener('click', function () { // 수정 클릭 시
+          var newComment = prompt('바꿀 내용을 입력하세요');
+          if (!newComment) {
+            return alert('내용을 반드시 입력하셔야 합니다');
+          }
+          var xhr = new XMLHttpRequest();
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              console.log(xhr.responseText);
+              getComment(id);
+            } else {
+              console.error(xhr.responseText);
+            }
+          };
+          xhr.open('PATCH', '/comments/' + comment.id);
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.send(JSON.stringify({ comment: newComment }));
+        });
+        var remove = document.createElement('button');
+        remove.textContent = '삭제';
+        remove.addEventListener('click', function () { // 삭제 클릭 시
+          var xhr = new XMLHttpRequest();
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              console.log(xhr.responseText);
+              getComment(id);
+            } else {
+              console.error(xhr.responseText);
+            }
+          };
+          xhr.open('DELETE', '/comments/' + comment.id);
+          xhr.send();
+        });
+        */
+      });
+    } else {
+      console.error(xhr.responseText);
+    }
+  };
+  xhr.open('GET', `/comment/${pageId}`);
+  xhr.send();
+}
 </script>
 
 </body>

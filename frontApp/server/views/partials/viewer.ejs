@@ -10,7 +10,7 @@
                 <img src="<%= page.img %>" > 
             </article>
         </section>
-        <aside id="main_aside">
+        <aside id="main_aside" onclick='getComment();'>
             <input id="first" type="radio" name="tab" checked="checked" />
             <input id="second" type="radio" name="tab" />
             <section class="buttons">
@@ -72,8 +72,29 @@
                 </span>
                 <% } %>
             </div>
-            <div class="tab_item" style="margin: 20px;">
-                Comments
+            <div class="tab_item" id="tab_comment" style="margin: 20px;">
+                <div class="comment">
+                <!--Comment-->
+                  <div class="ui comments">
+                  <h3 class="ui dividing header">Comments</h3>
+                  <!--Comment post Form-->
+                  <form class="ui reply form" id="commentForm" action="/comment/post" method="post">
+                  <input type="hidden" name="pageId" value="<%=page.id%>" />
+                  <input type="hidden" name="commentUserId" value="<%=user.id%>" />
+                      <div class="field">
+                        <textarea name="content"></textarea>
+                      </div>
+                      <button class="ui blue labeled submit icon button" type="submit">
+                        <i class="icon edit"></i> Add Comments
+                      </button>
+                    </form>
+                  <!--Comment post Form-->
+                  <!-- Comment Area-->
+                  <div class="comment" id="comment-list">
+                    <!-- Comment Area Finish-->
+                  </div>
+              <!--Comment Finish-->
+                </div>
             </div>
         </aside>
     </div>

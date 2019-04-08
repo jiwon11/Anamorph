@@ -5,7 +5,7 @@ const fs = require('fs');
 // get gravatar icon from email
 const gravatar = require('gravatar');
 
-const { Page,Hashtag,User } = require('../../models');
+const { Page,Hashtag,User,Comment } = require('../../models');
 const { isLoggedIn } = require('./middlewares');
 
 const router = express.Router();
@@ -106,11 +106,19 @@ router.get('/:pageId', async (req, res, next) => {
     ], 
      });
     const tags = await Hashtag.findAll({ });
+    const comments = await Comment.findAll({
+        where : { commentpage : pageId },
+        include : [{
+            model : User,
+            attributes : ['id', 'username','img'],
+        },]
+    });
     return res.render('pageView', {
         title : `${page.title} | Anamorph`,
         user : req.user,
         page : page, 
         tags : tags,
+        comments : comments,
         gravatar: gravatar.url(req.user.email,{s:'80',r:'x',d:'retro'},true),
     });
     } catch (error) {
