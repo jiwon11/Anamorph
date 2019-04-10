@@ -13,7 +13,16 @@ router.get('/:tag', async (req, res, next) => {
         const hashtag = await Hashtag.find({ where : { title : tag } });
         let pages = [];
         if (hashtag) {
-            pages = await hashtag.getPages({ include : [{ model : User }] });
+            pages = await hashtag.getPages({
+                include : [{
+                    model : User,
+                    attributes : ['id', 'username','img'],
+                }, {
+                    model : Hashtag,
+                    attributes : ['title'],
+                } ],
+                order : [['createdAt','DESC']],
+                });
             follow = await hashtag.getUsers({where : {id : req.user.id }});
         }
         return res.render('index', {

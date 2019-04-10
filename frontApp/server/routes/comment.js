@@ -31,7 +31,6 @@ router.get('/:pageId', function(req, res, next) {
       where : { commentpage : req.params.pageId },
     })
       .then((comments) => {
-        console.log(comments);
         res.json(comments);
       })
       .catch((err) => {
@@ -39,4 +38,26 @@ router.get('/:pageId', function(req, res, next) {
         next(err);
       });
   });
+
+router.patch('/:commentId', function(req, res, next) {
+  Comment.update({ comment: req.body.comment }, { where: { id: req.params.commentId } })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      next(err);
+    });
+});
+
+router.delete('/:id', function(req, res, next) {
+  Comment.destroy({ where: { id: req.params.id } })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      next(err);
+    });
+});
 module.exports = router;

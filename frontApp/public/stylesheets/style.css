@@ -18,3 +18,7 @@ a {
 #search_bar_contain {
   width: 40%;
 }
+.Commentmenu {
+  visibility: hidden;
+  float: right;
+}

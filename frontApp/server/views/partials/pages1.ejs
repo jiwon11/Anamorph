@@ -8,9 +8,9 @@
     <input id="tag-title" type="hidden" value="<%= tags %>">
 <% } else {%>
     <h1 style="display : inline;"> tags : </h1>
-    <% for(var i=0; i<tags.length; i++){%>
-        <h1 style="display : inline;"> [<%= tags[i].title %>] </h1>
-    <% } %>
+    <% tags.forEach((tag) => { %>
+        <h1 style="display : inline;"> [<%= tag.title %>] </h1>
+    <% }); %>
 <% } %>
 <% if(typeof(tags) === 'string') {%>
     <%if (follow.length === 1) {%>
@@ -118,13 +118,13 @@
                     </div>
                     <div class="content" style="padding:0px;text-align: center;">
                       <div class="transition hidden">
-                        <% for(var i=0; i<page.hashtags.length;i++) {%>
+                        <% page.hashtags.forEach((hashtag) => {%>
                             <span class="ui black labels">
-                                <a class="ui label" href="/tag/<%= page.hashtags[i].title %>">
-                                    <%= page.hashtags[i].title %>
+                                <a class="ui label" href="/tag/<%= hashtag.title %>">
+                                    <%= hashtag.title %>
                                 </a>
                             </span>
-                        <% } %>
+                        <% }); %>
                       </div>
                     </div>
                 </div>

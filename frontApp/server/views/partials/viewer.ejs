@@ -10,18 +10,19 @@
                 <img src="<%= page.img %>" > 
             </article>
         </section>
-        <aside id="main_aside" onclick='getComment();'>
+        <aside id="main_aside">
             <input id="first" type="radio" name="tab" checked="checked" />
             <input id="second" type="radio" name="tab" />
             <section class="buttons">
                 <label for="first">Infomations</label>
-                <label for="second">Comments</label>
+                <label for="second" onclick='getComment();'>Comments</label>
             </section>
             <div class="tab_item" style="margin: 20px;">
                 <h1 class="ui header">
                     <input id="myId" type="hidden" value="<%= user.id %>">
                     <input id="page-user-id" type="hidden" value="<%= page.user.id %>">
                     <input id="page-id" type="hidden" value="<%= page.id %>">
+                    <input id="Myname" type="hidden" value="<%= page.user.username %>">
                     <img src="<%= page.user.img %>" class="ui circular small image" style="margin-right : 10px; cursor:pointer;" onclick="location.href='/users/<%=page.user.username%>';">
                     <%= page.user.username %>
                     <% if(user && user.id === page.user.id) {%>
@@ -72,29 +73,32 @@
                 </span>
                 <% } %>
             </div>
-            <div class="tab_item" id="tab_comment" style="margin: 20px;">
-                <div class="comment">
+            <div class="tab_item" id="tab_comment" style="margin: 20px;" >
+                
                 <!--Comment-->
                   <div class="ui comments">
                   <h3 class="ui dividing header">Comments</h3>
                   <!--Comment post Form-->
+                  <div class="field" style="margin-bottom : 30px;">
                   <form class="ui reply form" id="commentForm" action="/comment/post" method="post">
                   <input type="hidden" name="pageId" value="<%=page.id%>" />
                   <input type="hidden" name="commentUserId" value="<%=user.id%>" />
-                      <div class="field">
-                        <textarea name="content"></textarea>
-                      </div>
-                      <button class="ui blue labeled submit icon button" type="submit">
-                        <i class="icon edit"></i> Add Comments
+                        <div style="display:inline-block;width:70%;vertical-align: top;">
+                        <textarea name="content" placeholder="Add a comment..." rows="1" style="height: auto;resize: none;"></textarea>
+                        </div>
+                      <button class="small ui button" type="submit" style="margin-top:7px;">
+                      Add comments
                       </button>
                     </form>
+                    </div>
                   <!--Comment post Form-->
                   <!-- Comment Area-->
-                  <div class="comment" id="comment-list">
+                  <div id="comment-list">
+                  </div>
                     <!-- Comment Area Finish-->
                   </div>
               <!--Comment Finish-->
-                </div>
+                
             </div>
         </aside>
     </div>

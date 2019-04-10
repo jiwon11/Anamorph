@@ -9,7 +9,9 @@
 <!--JQuery For SemanticUI-->
 <script>
   $('.ui.dropdown')
-  .dropdown();
+  .dropdown({
+    action: 'combo'
+  });
   
   $('.message .close')
   .on('click', function() {
@@ -390,10 +392,7 @@ if(el1) {
         }
       });
 }
-document.getElementById('tab_comment').addEventListener('click', function () {
-    getComment();
-  });
-
+if (document.getElementById('commentForm')){
 document.getElementById('commentForm').addEventListener('submit', function (e) {
   e.preventDefault();
   var pageId = e.target.pageId.value;
@@ -418,71 +417,160 @@ document.getElementById('commentForm').addEventListener('submit', function (e) {
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(JSON.stringify({pageId : pageId, userId: userId, comment: comment }));
 });
+}
 
 function getComment() {
   console.log('ajax load comment...');
   var xhr = new XMLHttpRequest();
   var pageId = document.querySelector('#page-id').value;
+  var myId = document.querySelector('#myId').value;
+  var myName = document.querySelector('#Myname').value;
   xhr.onload = function () {
     if (xhr.status === 200) {
       var comments = JSON.parse(xhr.responseText);
       var commentbody = document.querySelector('#comment-list');
       commentbody.innerHTML = '';
       comments.forEach((comment) => {
+        var commentDate = new Date(comment.createdAt);
+        var commentCreatedAt = commentDate.toDateString();
         var commentForm = `
+        <div class="comment">
+        <input id="commentUserId" type="hidden" value="${comment.user.id}">
+        <input id="commentText" type="hidden" value="${comment.comment}">
+        <input class="commentId" type="hidden" value="${comment.id}">
         <a class="avatar">
           <img src=" ${comment.user.img}">
         </a>
         <div class="content">
+        <div class="comment-area">
           <a class="author"> ${comment.user.username} </a>
           <div class="metadata">
-            <span class="date"> ${comment.createdAt} </span>
+            <span class="date"> ${commentCreatedAt} </span>
           </div>
-          <div class="text">
+          <div class="text" name="commentText">
             ${comment.comment}
+            <span class="Commentmenu" style="visibility: hidden;">
+            <div class='circular ui icon simple dropdown button' style='background-color : rgba( 255, 255, 255, 0.5 );'>
+            <i class="ellipsis vertical icon"></i>
+              <div class="left menu">
+              </div>
+              </div>
+            </span>
           </div>
           <div class="actions">
             <a class="reply">Reply</a>
           </div>
+        </div>
+        </div>
         `;
         commentbody.insertAdjacentHTML('beforeend', commentForm);
+        var commentContent = document.getElementsByClassName('comment-area');
+        if(commentContent.length === comments.length){
+          [].forEach.call(commentContent, function(el) {
+            if(el){
+            el.addEventListener("mouseover", function(){
+              el.getElementsByClassName('Commentmenu')[0].style.visibility = 'visible';    
+          });
+            el.addEventListener("mouseout", function(){
+            el.getElementsByClassName('Commentmenu')[0].style.visibility = 'hidden';
+          });
+        }
+        });
+      }
         /* 
-        var edit = document.createElement('button');
-        edit.textContent = '수정';
-        edit.addEventListener('click', function () { // 수정 클릭 시
-          var newComment = prompt('바꿀 내용을 입력하세요');
-          if (!newComment) {
-            return alert('내용을 반드시 입력하셔야 합니다');
-          }
-          var xhr = new XMLHttpRequest();
-          xhr.onload = function () {
-            if (xhr.status === 200) {
-              console.log(xhr.responseText);
-              getComment(id);
-            } else {
-              console.error(xhr.responseText);
-            }
-          };
-          xhr.open('PATCH', '/comments/' + comment.id);
-          xhr.setRequestHeader('Content-Type', 'application/json');
-          xhr.send(JSON.stringify({ comment: newComment }));
-        });
-        var remove = document.createElement('button');
-        remove.textContent = '삭제';
-        remove.addEventListener('click', function () { // 삭제 클릭 시
-          var xhr = new XMLHttpRequest();
-          xhr.onload = function () {
-            if (xhr.status === 200) {
-              console.log(xhr.responseText);
-              getComment(id);
-            } else {
-              console.error(xhr.responseText);
-            }
-          };
-          xhr.open('DELETE', '/comments/' + comment.id);
-          xhr.send();
-        });
         */
+        var commentList = document.querySelector('#comment-list');
+        var commentMenu = document.createElement('button');
+        var commentCol = commentList.getElementsByClassName('comment');
+        if (commentCol.length === comments.length) {
+          var commentMenu = document.getElementsByClassName('Commentmenu');
+          for(var i=0; i<commentCol.length; i++) {
+            var commentMenuLists = commentMenu[i].firstElementChild.childNodes[3];
+            if(parseInt(comment.user.id,10) === parseInt(myId,10)) {
+              commentMenuLists.innerHTML = `
+              <div class="item" name="commentEdit"><i class="edit icon"></i> Edit</div>
+              <div class="item" name="commentDelete"><i class="delete icon"></i> Remove</div>
+              `;
+            } else {
+              commentMenuLists.innerHTML = `
+              <div class="item"><i class="exclamation triangle icon"></i>Report</div>
+              `;
+            }
+          }
+        };
+        var edits=document.querySelectorAll('.item[name=commentEdit]');
+        var commentIds = document.querySelectorAll('.commentId');
+        var commentText = document.querySelectorAll('.text[name=commentText]');
+        var commentTextList = Array.prototype.slice.call(commentText);
+        var originalcommentText= [];
+        for(var i=0;i<commentTextList.length;i++){
+          originalcommentText.push(commentTextList[i].innerText);
+      }
+        if(edits.length===commentIds.length){
+          var editList = Array.prototype.slice.call(edits);
+          edits.forEach((edit) => {
+            edit.addEventListener('click', function(){
+              var commentId = parseInt(editList.indexOf(edit),10)+1
+              for(var i=0;i<commentTextList.length;i++){
+                var commentTextElement = parseInt(commentTextList.indexOf(commentTextList[i]),10)+1;
+                if(commentId === commentTextElement){
+                  commentTextList[i].innerHTML = `
+                  <form id="commentEdit" action="/comment/update/${commentId}" method="patch">
+                  <textarea name="newComment">${originalcommentText[i]}</textarea>
+                  </form>
+                  <button class="small ui button" id="commentEditBtn" style='background-color : rgba( 255, 255, 255, 0.5 ); type="submit"'>Save</button>
+                  <span class="Commentmenu" style="visibility: hidden;">
+                  </span>
+                  </div>
+                  `;
+                }
+              }
+              var commentEditBtn = document.getElementById('commentEditBtn');
+                  commentEditBtn.addEventListener('click', function (e) { // 수정 클릭 시
+                  e.preventDefault();
+                  e.stopPropagation();
+                  var commentEdit = document.getElementById('commentEdit');
+                  var newComment = commentEdit.querySelector('textarea').value;
+                  var xhr = new XMLHttpRequest();
+                  xhr.onload = function () {
+                    if (xhr.status === 200) {
+                      console.log(xhr.responseText);
+                      getComment();
+                    } else {
+                      console.error(xhr.responseText);
+                    }
+                  };
+                  commentId = commentId.toString();
+                  xhr.open('PATCH', `/comment/${commentId}`);
+                  xhr.setRequestHeader('Content-Type', 'application/json');
+                  xhr.send(JSON.stringify({ comment: newComment }));
+                  
+                });
+              
+            });
+          });
+        }
+        var removes=document.querySelectorAll('.item[name=commentDelete]');
+        if(removes.length===commentIds.length) {
+           removes.forEach(function (remove) {
+             remove.addEventListener('click',function(){
+               var removeList = Array.prototype.slice.call(removes);
+               var commentId = parseInt(removeList.indexOf(remove),10)+1
+               console.log(commentId);
+               var xhr = new XMLHttpRequest();
+               xhr.onload = function () {
+                 if (xhr.status === 200) {
+                   console.log(xhr.responseText);
+                   getComment();
+                 } else {
+                   console.error(xhr.responseText);
+                 }
+               };
+               xhr.open('DELETE', `/comment/${commentId}`);
+               xhr.send();
+          });
+        })
+        }
       });
     } else {
       console.error(xhr.responseText);
@@ -491,6 +579,8 @@ function getComment() {
   xhr.open('GET', `/comment/${pageId}`);
   xhr.send();
 }
+
+
 </script>
 
 </body>
