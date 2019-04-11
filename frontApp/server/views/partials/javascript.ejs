@@ -567,7 +567,8 @@ function getComment() {
                  }
                };
                xhr.open('DELETE', `/comment/${commentId}`);
-               xhr.send();
+               xhr.setRequestHeader('Content-Type', 'application/json');
+               xhr.send(JSON.stringify({ comment: newComment }));
           });
         })
         }
@@ -579,7 +580,68 @@ function getComment() {
   xhr.open('GET', `/comment/${pageId}`);
   xhr.send();
 }
+function resize(obj) {
+  obj.style.height = "1px";
+  obj.style.height = (1+obj.scrollHeight)+"px";
+}
 
+var el1 = document.getElementById('likeBtn');
+if(el1) {
+  el1.addEventListener('click', function () {
+        var isLoggedIn = document.querySelector('#myId');
+        var pageId = document.querySelector('#page-id').value;
+        var userId = isLoggedIn.value;
+        console.log(isLoggedIn.value);
+        if(isLoggedIn){
+          var xhr = new XMLHttpRequest();
+              xhr.onload = function () {
+                if (xhr.status === 200) {
+                  console.log(xhr.responseText);
+                  location.reload();
+                } else {
+                  console.error(xhr.responseText);
+                }
+              };
+              xhr.open('POST', `/like`);
+              xhr.setRequestHeader('Content-Type', 'application/json');
+              xhr.send(JSON.stringify({ pageId: pageId, userId: userId }));
+        }
+  });
+}
+
+var el1 = document.getElementById('likedBtn');
+if(el1) {
+  el1.addEventListener('click', function () {
+        var isLoggedIn = document.querySelector('#myId');
+        var pageId = document.querySelector('#page-id').value;
+        var userId = isLoggedIn.value;
+        console.log(isLoggedIn.value);
+        if(isLoggedIn){
+          var xhr = new XMLHttpRequest();
+              xhr.onload = function () {
+                if (xhr.status === 200) {
+                  console.log(xhr.responseText);
+                  location.reload();
+                } else {
+                  console.error(xhr.responseText);
+                }
+              };
+              xhr.open('DELETE', `/like`);
+              xhr.setRequestHeader('Content-Type', 'application/json');
+              xhr.send(JSON.stringify({ pageId: pageId, userId: userId }));
+        }
+  });
+}
+if(document.getElementById('likeNum')){
+$(document).ready(function () {
+    $('#likeNum').popup({
+        hoverable: true,
+        popup: '.ui.popup',
+        inline: true,
+        position: 'right center'
+});
+    });
+}
 
 </script>
 

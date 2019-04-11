@@ -5,7 +5,7 @@ const fs = require('fs');
 // get gravatar icon from email
 const gravatar = require('gravatar');
 
-const { Page,Hashtag,User,Comment } = require('../../models');
+const { Page,Hashtag,User,Comment,Like } = require('../../models');
 const { isLoggedIn } = require('./middlewares');
 
 const router = express.Router();
@@ -68,7 +68,11 @@ router.get('/', (req, res, next) => {
         }, {
             model : Hashtag,
             attributes : ['title'],
-        } ],
+        }, {
+            model : Comment,
+        },{
+            model : Like,
+        },],
         order : [['createdAt','DESC']],
     })
     .then (async (pages) => {
@@ -113,12 +117,24 @@ router.get('/:pageId', async (req, res, next) => {
             attributes : ['id', 'username','img'],
         },]
     });
+    var likeResult='';
+    await Like.findAndCountAll({
+        where : { likepage : pageId },
+        include : [{
+            model : User,
+            attributes : ['id', 'username','img'],
+        },]
+    })
+    .then(result => {
+        likeResult = result;
+      });
     return res.render('pageView', {
         title : `${page.title} | Anamorph`,
         user : req.user,
         page : page, 
         tags : tags,
         comments : comments,
+        likeResult : likeResult,
         gravatar: gravatar.url(req.user.email,{s:'80',r:'x',d:'retro'},true),
     });
     } catch (error) {

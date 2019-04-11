@@ -14,8 +14,15 @@
             <input id="first" type="radio" name="tab" checked="checked" />
             <input id="second" type="radio" name="tab" />
             <section class="buttons">
-                <label for="first">Infomations</label>
-                <label for="second" onclick='getComment();'>Comments</label>
+                <div class="massive ui compact menu" style="margin-top : 20px;">
+                  <label class="item" for="first">
+                    <i class="icon info"></i> Infomations
+                  </label>
+                  <label class="item" for="second" onclick='getComment();'>
+                    <i class="icon comments"></i> Comments
+                    <div class="floating ui big red label"><%= comments.length%></div>
+                  </label>
+                </div>
             </section>
             <div class="tab_item" style="margin: 20px;">
                 <h1 class="ui header">
@@ -26,9 +33,9 @@
                     <img src="<%= page.user.img %>" class="ui circular small image" style="margin-right : 10px; cursor:pointer;" onclick="location.href='/users/<%=page.user.username%>';">
                     <%= page.user.username %>
                     <% if(user && user.id === page.user.id) {%>
-                    <div class="ui black buttons" style="margin-left : 30px;">
-                    <div class="ui button">Menu</div>
-                    <div class="ui floating dropdown icon button">
+                    <div class="ui buttons" style="margin-left : 30px;">
+                    <div class="ui button" style="background-color : rgba( 255, 255, 255, 0.5 );">Menu</div>
+                    <div class="ui floating dropdown icon button" style="background-color : rgba( 255, 255, 255, 0.5 );">
                       <i class="dropdown icon"></i>
                       <div class="menu">     
                         <div class="item" id="update-page"><i class="edit icon"></i> Edit Post</div>
@@ -62,6 +69,42 @@
                 </h1>
                 <h1 class="ui header" style="margin: 10px;">
                     <%= page.title %>
+                    <div class="likeBtn" style="display:block;">
+                         <% if(likeResult.rows.some(like => like.user.id === user.id)) { %>
+                                <div class="ui labeled button" tabindex="0">
+                                    <div class="ui red button" id="likedBtn">
+                                      <i class="heart icon"></i> Liked
+                                    </div>
+                                    <div class="ui basic label" id="likeNum"><%= likeResult.count %> </div>
+                                    <div class="ui fluid popup">
+                                    <div class="ui link list">
+                                        <% likeResult.rows.forEach(like => { %>
+                                            <div calss="likeUserInfo" OnClick="location.href='/users/<%=like.user.username%>'">
+                                            <img class="ui avatar image" src="<%= like.user.img %>">
+                                            <span class="item"><%= like.user.username %></span>
+                                            </div>
+                                        <% }); %>
+                                        </div>
+                                    </div>
+                                </div>
+                         <% } else {%>
+                        <div class="ui labeled button" tabindex="0">
+                            <div class="ui button" id="likeBtn">
+                              <i class="heart icon"></i> Like
+                            </div>
+                            <div class="ui basic label" id="likeNum"><%= likeResult.count %> </div>
+                                    <div class="ui fluid popup">
+                                    <div class="ui link list">
+                                        <% likeResult.rows.forEach(like => { %>
+                                            <div calss="likeUserInfo" OnClick="location.href='/users/<%=like.user.username%>'">
+                                            <img class="ui avatar image" src="<%= like.user.img %>">
+                                            <span class="item"><%= like.user.username %></span>
+                                            </div>
+                                        <% }); %>
+                                        </div>
+                                    </div>
+                            </div>
+                        <% } %>
                     <div class="sub header" style="margin: 10px;"> <%= page.content %> </div>
                 </h1>
                 <h1>Tags</h1>
@@ -84,7 +127,7 @@
                   <input type="hidden" name="pageId" value="<%=page.id%>" />
                   <input type="hidden" name="commentUserId" value="<%=user.id%>" />
                         <div style="display:inline-block;width:70%;vertical-align: top;">
-                        <textarea name="content" placeholder="Add a comment..." rows="1" style="height: auto;resize: none;"></textarea>
+                        <textarea name="content" onkeydown="resize(this)" placeholder="Add a comment..." rows="1" style="height: auto;resize: none;overflow:hidden;"></textarea>
                         </div>
                       <button class="small ui button" type="submit" style="margin-top:7px;">
                       Add comments
@@ -212,8 +255,8 @@
             display: block; float: left;
 
             /* 크기 및 글자 위치 지정*/
-            width: 100px; height: 30px;
-            line-height: 30px;
+            width: 100px; height: 50px;
+            line-height: 50px;
             text-align: center;
             
 
