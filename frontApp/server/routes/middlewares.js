@@ -2,7 +2,11 @@ exports.isLoggedIn = (req, res, next) => {
     if(req.isAuthenticated()) {
         next();
     } else {
-        res.status(403).send('Login Please');
+        res.render('index', {
+            title : `Login | Anamorph`,
+            user : req.user,
+            loginError : req.flash('loginError'),
+        });
     }
 };
 

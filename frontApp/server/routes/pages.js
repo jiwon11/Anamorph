@@ -60,38 +60,6 @@ router.post('/post', isLoggedIn, upload2.none(), async (req, res, next) => {
     }
 });
 
-router.get('/', (req, res, next) => {
-    Page.findAll({
-        include : [{
-            model : User,
-            attributes : ['id', 'username','img'],
-        }, {
-            model : Hashtag,
-            attributes : ['title'],
-        }, {
-            model : Comment,
-        },{
-            model : Like,
-        },],
-        order : [['createdAt','DESC']],
-    })
-    .then (async (pages) => {
-            const tags = await Hashtag.findAll({ });
-            res.render('index', {
-                title : 'Anamorph',
-                pages : pages,
-                user : req.user,
-                gravatar: gravatar.url(req.user.email,{s:'80',r:'x',d:'retro'},true),
-                tags : tags,
-                loginError : req.flash('loginError'),
-            });
-    })
-    .catch((error) => {
-        console.error(error);
-        next(error);
-    });
-});
-
 
 router.get('/:pageId', async (req, res, next) => {
     const pageId = req.params.pageId;

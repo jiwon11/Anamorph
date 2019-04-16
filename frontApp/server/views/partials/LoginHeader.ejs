@@ -1,7 +1,7 @@
 <!-- Fixed navbar -->
 <div class="ui massive secondary menu">
         <% if(user && user.id) {%>
-        <a class="item" id="logo" href="/pages"><img src="../images/logo.png" id="logo_img"></a>
+        <a class="item" id="logo" href="/"><img src="../images/logo.png" id="logo_img"></a>
         <% } else {%>
         <% req.logOut(); %>
         <% req.session.destroy(); %>
@@ -13,7 +13,7 @@
                   <i class="search icon"></i>
                 </div>
               </div>
-        <a class="item" href="/pages">Recents</a>
+        <a class="item" href="/">Recents</a>
         <a class="item" href="/follow">Follow</a>
         
         <div class="ui dropdown item">
@@ -29,11 +29,11 @@
               <div class="notice" style="margin-right:30px;margin-top:13px;height:70%;">
                 <div class="ui compact menu">
                   <a class="item">
-                    <i class="icon mail"></i> Messages
+                    <i class="icon mail"></i>
                     <div class="floating ui red label">22</div>
                   </a>
                   <a class="item">
-                    <i class="icon users"></i> Friends
+                    <i class="icon bell"></i>
                     <div class="floating ui teal label">22</div>
                   </a>
                 </div>
