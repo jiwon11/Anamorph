@@ -1,5 +1,5 @@
-<h1> User Name : <%= user.username %> </h1>
-<h1> <%= user.username %>'s upload Num of pages : <%= pages.length %> </h1>
+<h1> User Name : <%= result_user.username %> </h1>
+<h1> <%= result_user.username %>'s upload Num of pages : <%= pages.length %> </h1>
 <div>
 <button class="ui labeled icon button" id="EditProfile-btn">
     <i class="edit icon"></i>
@@ -22,11 +22,11 @@
             <input id="Userimg-url" type="hidden" name="url">
             <div class="field">
                 <label>Email</label>
-                <input type="text" name="email" value="<%= user.email %>">
+                <input type="text" name="email" value="<%= result_user.email %>">
             </div>
             <div class="field">
                 <label>Username</label>
-                <input type="text" name="username" value="<%= user.username %>">
+                <input type="text" name="username" value="<%= result_user.username %>">
             </div>
             <div class="field">
             <label class="img-label" for="img">Profile Image</label>
@@ -84,7 +84,7 @@
                 <i class="heart outline like icon"></i>
                     17
                 <div class="right floated author">
-                  <img class="ui avatar image" src="<%= user.img %>"> <%= user.username %>
+                  <img class="ui avatar image" src="<%= result_user.img %>"> <%= result_user.username %>
                 </div>
               </div>
             </a>

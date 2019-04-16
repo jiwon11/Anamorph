@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { Page,Hashtag,User } = require('../../models');
+const { Page,Hashtag,User,Comment,Like } = require('../../models');
 const { isLoggedIn } = require('./middlewares');
 /* GET home page. */
 router.get('/:tag', async (req, res, next) => {
@@ -20,7 +20,11 @@ router.get('/:tag', async (req, res, next) => {
                 }, {
                     model : Hashtag,
                     attributes : ['title'],
-                } ],
+                },{
+                    model : Comment,
+                },{
+                    model : Like,
+                }, ],
                 order : [['createdAt','DESC']],
                 });
             follow = await hashtag.getUsers({where : {id : req.user.id }});

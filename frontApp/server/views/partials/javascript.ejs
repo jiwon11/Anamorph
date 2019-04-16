@@ -642,7 +642,59 @@ $(document).ready(function () {
 });
     });
 }
-
+$('.ui.search')
+  .search({
+    type          : 'category',
+    minCharacters : 1,
+    apiSettings   : {
+      onResponse: function(Response) {
+        var
+          response = {
+            results : {}
+          }
+        ;
+        // translate GitHub API response to work with search
+        $.each(Response, function(index, items) {
+          var
+            title   = index || 'Unknown',
+            maxResults = 8
+          ;
+          if(index >= maxResults) {
+            return false;
+          }
+          if(response.results[title] === undefined) {
+            response.results[title] = {
+              name    : title,
+              results : []
+            };
+          }
+          if(index==='tags'){
+          items.forEach( (item) => {
+            response.results[title].results.push({
+            title       : item.title,
+            description : item.description,
+            url         : `/tag/${item.title}`
+          });
+          })
+          }
+          if(index==='user'){
+          items.forEach( (item) => {
+            response.results[title].results.push({
+            image       : item.img,
+            title       : item.username,
+            url         : `/users/${item.username}`
+          });
+          })
+          }
+          // create new language category
+          // add result to category
+        });
+        return response;
+      },
+      url: '/search/{query}'
+    }
+  })
+;
 </script>
 
 </body>

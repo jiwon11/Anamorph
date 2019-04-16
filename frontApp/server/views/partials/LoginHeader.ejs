@@ -7,12 +7,12 @@
         <% req.session.destroy(); %>
         <a class="item" id="logo" href="/"><img src="../images/logo.png" id="logo_img"></a>
         <% } %>
-        <div class="item" id="search_bar_contain">
-            <div class="ui big icon input" id="search_bar">
-              <input type="text" placeholder="Search...">
-              <i class="search icon"></i>
-            </div>
-        </div>
+            <div class="ui search" style="margin-top:5px;">
+                <div class="ui small left icon input">
+                  <input class="prompt" type="text" placeholder="Search...">
+                  <i class="search icon"></i>
+                </div>
+              </div>
         <a class="item" href="/pages">Recents</a>
         <a class="item" href="/follow">Follow</a>
         
@@ -51,6 +51,5 @@
               </div>
             </div>
         </div>
-      </div>
 </div>
 <!-- Fixed navbar -->

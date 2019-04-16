@@ -32,7 +32,8 @@ router.get('/:userId',isLoggedIn, async(req,res,next) => {
       res.render('profile', {
           title : `${user.username} | Anamorph`,
           pages : pages,
-          user : user,
+          user : req.user,
+          result_user : user,
           gravatar: gravatar.url(user.email,{s:'80',r:'x',d:'retro'},true),
           logginError : req.flash('loginError'),
       });
