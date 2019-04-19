@@ -4,7 +4,7 @@
 <img src="<%= page.img %>"> 
 <h2> <%= page.createdAt.toDateString() %> </h2>
 -->
-<div id="content">
+<div id="content" style="margin-top:10px;">
         <section id="main_section">
             <article class="main_article" style="background-color : black;">
                 <img src="<%= page.img %>" > 
@@ -63,10 +63,9 @@
                         Followed
                         </button>
                     <% } %>
-                    <h3 class="ui left aligned header">
-                    <div class="sub header"> <%= page.createdAt.toDateString() %> </div>
+                    <h3 class="ui left aligned header" style="margin-top:10px;">
+                    <div class="sub header"> Publish on : <%= page.createdAt.toDateString() %> </div>
                     </h3>
-                </h1>
                 <h1 class="ui header" style="margin: 10px;">
                     <%= page.title %>
                     <div class="likeBtn" style="display:block;">
@@ -94,6 +93,9 @@
                             </div>
                             <div class="ui basic label" id="likeNum"><%= likeResult.count %> </div>
                                     <div class="ui fluid popup">
+                                    <% if(likeResult.rows.length === 0) {%>
+                                        <h2>Has not Like!!🤔🤔</h2>
+                                    <% } else {%>
                                     <div class="ui link list">
                                         <% likeResult.rows.forEach(like => { %>
                                             <div calss="likeUserInfo" OnClick="location.href='/users/<%=like.user.username%>'">
@@ -101,6 +103,7 @@
                                             <span class="item"><%= like.user.username %></span>
                                             </div>
                                         <% }); %>
+                                        <% } %>
                                         </div>
                                     </div>
                             </div>
@@ -109,8 +112,8 @@
                 </h1>
                 <h1>Tags</h1>
                 <% for( var i=0; i<page.hashtags.length;i++) {%>
-                <span class="ui black labels">
-                    <a class="ui label" href="/tag/<%= page.hashtags[i].title %>">
+                <span class="ui basic labels">
+                    <a class="ui basic label" href="/tag/<%= page.hashtags[i].title %>">
                         <%= page.hashtags[i].title %>
                     </a>
                 </span>
@@ -210,12 +213,12 @@
             overflow: hidden;
         }
         #content > #main_section {
-            width: 70%;
+            width: 71%;
             height : 720px;
             float: left;
         }
         #content > #main_aside {
-            width: 28%;
+            width: 26%;
             float: right;
         }
         

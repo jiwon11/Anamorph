@@ -1,35 +1,14 @@
+<!--
 <h1> User Name : <%= user.username %> </h1>
 <h1> Num of pages : <%= pages.length %> </h1>
 <% if(typeof(tags) === 'string') {%>
 <h1><%= follow.length %></h1>
 <% } %>
-<% if(typeof(tags) === 'string') {%>
-    <h1> tag : <%= tags %> </h1>
-    <input id="tag-title" type="hidden" value="<%= tags %>">
-<% } else {%>
-    <h1 style="display : inline;"> tags : </h1>
-    <% tags.forEach((tag) => { %>
-        <h1 style="display : inline;"> [<%= tag.title %>] </h1>
-    <% }); %>
-<% } %>
-<% if(typeof(tags) === 'string') {%>
-    <%if (follow.length === 1) {%>
-        <button class="ui active button" id="tagUnFollow">
-            <i class="tag icon"></i>
-            Following
-          </button>
-    <% } else {%>
-    <button class="ui active button" id="tagFollow">
-              <i class="tag icon"></i>
-              Follow
-            </button>
-    <% } %>
-<% } %>
-
+-->
 <% if(user) {%>
     <div class="timeline">
     <div class="upload-btn">
-    <button class="ui right labeled icon button" id="upload-btn">
+    <button class=" fluid ui right labeled icon button" id="upload-btn">
     <i class="upload icon"></i>
     Upload
     </button>
@@ -86,46 +65,67 @@
             </div>
         </div>
     </div>
+    <div class="ui center aligned header" style="margin:10px;">
+    <% if(typeof(tags) === 'string') {%>
+    <h1 style="display : inline;"> <%= tags %> </h1>
+    <input id="tag-title" type="hidden" value="<%= tags %>">
+    <% } %>
+    
+<% if(typeof(tags) === 'string') {%>
+    <%if (follow.length === 1) {%>
+        <button class="ui basic active button" id="tagUnFollow">
+            <i class="tag icon"></i>
+            Following
+          </button>
+    <% } else {%>
+    <button class="ui basic active button" id="tagFollow">
+              <i class="tag icon"></i>
+              Follow
+            </button>
+    <% } %>
+<% } %>
+</div>
+    <div class="ui five cards">
     <% pages.forEach((page) => {%>
-    <div class="page" style="float:left; margin-right:20px;">
     <!--UI card views start-->
-    <div class="ui raised card">
-      <div class="content">
-        <div class="header" onclick="location.href='/pages/<%= page.id %>'" style="cursor:pointer;"> <%= page.title %> </div>
-        <div class="meta">
+    <div class="ui link card" style="margin:20px;height:100%;border-radius:0px;box-shadow:none;">
+      <div class="content" style="padding:0px 0px 0px 0px;">
+         <div class="center aligned header" onclick="location.href='/pages/<%= page.id %>'" style="font-size:25px;cursor:pointer;padding:0px 10px 0px 10px;margin:5px 0px 5px 0px;"><%= page.title %></div>
+        <div class="ui divider" style="margin:0px 0px 5px 0px;"></div>
+        <div class="meta" style="padding:0px 10px 0px 10px;">
             <% var minTimes = Math.round(((new Date().getTime() - page.createdAt) / 1000)/60) %>
             <% if(minTimes<1) { %>
-                <span class="right floated time"> just ago </span>
+                <span class="right floated time" style="margin-top:6px;"> just ago </span>
             <% } %> 
             <% if(minTimes>1 && minTimes<60){ %> <!--시간단위로 보여줌-->
-                <span class="right floated time"> <%= Math.round((minTimes)) %> Minutes ago </span>
+                <span class="right floated time" style="margin-top:6px;"> <%= Math.round((minTimes)) %> Minutes ago </span>
             <% } %>
             <% if(minTimes>60 && minTimes<1440){ %> <!--시간단위로 보여줌-->
-                <span class="right floated time"> <%= Math.round((minTimes/60)) %> Hours ago </span>
+                <span class="right floated time" style="margin-top:6px;"> <%= Math.round((minTimes/60)) %> Hours ago </span>
             <% } %>
             <% if(minTimes>=1440 && minTimes<10080) {%> <!--일단위로 보여줌-->
-                <span class="right floated time"> <%= Math.round((minTimes/1440)) %> Days ago </span>
+                <span class="right floated time" style="margin-top:6px;"> <%= Math.round((minTimes/1440)) %> Days ago </span>
             <% } %>
             <% if(minTimes>=10080 && minTimes<40320) {%> <!--주단위로 보여줌-->
-                <span class="right floated time"> <%= Math.round((minTimes/10080)) %> Weeks ago </span>
+                <span class="right floated time" style="margin-top:6px;"> <%= Math.round((minTimes/10080)) %> Weeks ago </span>
             <% } %>
             <!--tag 아코디언-->
             <div class="tag" style="width : 100px;">
-                <div class="ui styled fluid accordion">
+                <div class="ui fluid accordion">
                     <div class="title">
                       <i class="dropdown icon"></i>
                       Tags
                     </div>
                     <div class="content" style="padding:0px;text-align: center;">
-                      <div class="transition hidden">
+                      <span class="transition hidden" style="display:block;">
                         <% page.hashtags.forEach((hashtag) => {%>
-                            <span class="ui black labels">
-                                <a class="ui label" href="/tag/<%= hashtag.title %>">
+                            <span class="ui basic labels">
+                                <a class="ui basic label" href="/tag/<%= hashtag.title %>">
                                     <%= hashtag.title %>
                                 </a>
                             </span>
                         <% }); %>
-                      </div>
+                      </span>
                     </div>
                 </div>
             </div>
@@ -138,10 +138,10 @@
             <% } %>
         </div>
       </div>
-      <div class="extra content">
+      <div class="extra content" style="padding:10px 10px 5px 10px;">
         <i class="comments outline icon"></i>
             <%= page.comments.length %>
-        <i class="heart outline like icon"></i>
+        <i class="heart outline icon"></i>
             <%= page.likes.length %>
         <div class="right floated author" onclick="location.href='/users/<%= page.user.username %>'" style="cursor:pointer;">
             <img class="ui avatar image" src="<%= page.user.img %>"> <%= page.user.username %>
@@ -149,8 +149,8 @@
       </div>
     </div>
     <!--UI card views finish-->
+    <div style="clear:both:"></div>
     <% }); %>
 </div>
     </div>
-    </div><div style="clear:both:"></div>
 <%}; %>

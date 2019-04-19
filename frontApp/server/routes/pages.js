@@ -53,7 +53,7 @@ router.post('/post', isLoggedIn, upload2.none(), async (req, res, next) => {
             })));
             await page.addHashtags(result.map(r => r[0]));
         }
-        res.redirect('/pages');
+        res.redirect('/');
     } catch (error) {
         console.error(error);
         next(error);
@@ -115,7 +115,7 @@ router.post('/:id/delete', isLoggedIn, async (req, res, next) => {
     console.log(`Delete Page id : ${req.body.id}`);
     Page.destroy({ where : { id : req.body.id } })
         .then((result) => {
-            res.redirect('/pages');
+            res.redirect('/');
         })
         .catch((err) => {
             console.err(err);
@@ -155,7 +155,7 @@ router.post('/:pageId/update', isLoggedIn,upload2.none(), async (req, res, next)
                 })));
                 await page.setHashtags(result.map(r => r[0]));
             }
-        res.redirect('/pages');
+        res.redirect('/');
         }) 
         .catch((err) => {
             console.error(err);

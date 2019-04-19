@@ -5,7 +5,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const{ isLoggedIn, isNotLoggedIn } = require('./middlewares');
-const { User,Page,Hashtag } = require('../../models');
+const { Page,Hashtag,User,Comment,Like } = require('../../models');
 
 var router = express.Router();
 fs.readdir('profileImg', (error)=> {
@@ -18,14 +18,32 @@ fs.readdir('profileImg', (error)=> {
 
 router.get('/:userId',isLoggedIn, async(req,res,next) => {
   try {
-    User.findOne({ where : { username : req.params.userId } })
+    User.findOne({
+      where : { username:req.params.userId },
+      include : [{
+          model : User,
+          attributes : ['id', 'username','img'],
+          as : 'Followers',
+      }, {
+          model : User,
+          attributes : ['id', 'username','img'],
+          as : 'Followings',
+      }],
+    })
     .then((user) => {
     Page.findAll ({
       where : { userId : user.id },
-      include : {
-          model : User,
-          attributes : ['id', 'username'],
-      },
+      include : [{
+        model : User,
+        attributes : ['id', 'username','img'],
+    }, {
+        model : Hashtag,
+        attributes : ['title'],
+    }, {
+        model : Comment,
+    },{
+        model : Like,
+    },],
       order : [['createdAt', 'DESC']],
     })
     .then((pages) => {
@@ -47,7 +65,7 @@ router.get('/:userId',isLoggedIn, async(req,res,next) => {
     console.error(error);
     next(error);
   }
-  });
+});
 
   const upload = multer({
     storage : multer.diskStorage({

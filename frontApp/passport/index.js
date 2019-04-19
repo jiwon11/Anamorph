@@ -17,11 +17,11 @@ module.exports = (passport ) => {
             where : { id },
             include : [{
                 model : User,
-                attributes : ['id', 'username'],
+                attributes : ['id', 'username','img'],
                 as : 'Followers',
             }, {
                 model : User,
-                attributes : ['id', 'username'],
+                attributes : ['id', 'username','img'],
                 as : 'Followings',
             }],
         })

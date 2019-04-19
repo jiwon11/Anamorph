@@ -1,11 +1,25 @@
-<h1> User Name : <%= result_user.username %> </h1>
-<h1> <%= result_user.username %>'s upload Num of pages : <%= pages.length %> </h1>
-<div>
-<button class="ui labeled icon button" id="EditProfile-btn">
+<div class="ui container" style="height:20%;width: 100%; text-align: center;">
+    <img class="ui fluid image" src="<%=result_user.img%>" style="height:100%;width: 100%;">
+</div>
+
+<div class="userInfo" style="margin-top:10px;padding:0 150px 0 150px;">
+<h1 class="ui header" style="margin-left:30px;display:inline-block;">
+  <img src="<%=result_user.img%>" class="ui rounded image" style="margin:10px;">
+  <%=result_user.username%>
+  <div class="content">
+  <p class="sub header">Followers <%=result_user.Followers.length%></p>
+  </div>
+</h1>
+<% if(result_user.id===user.id) {%>
+<button class="ui right floated labeled icon basic button" id="EditProfile-btn" style="margin:30px 50px 0 0;border:none;border-radius:0px;box-shadow:none;">
     <i class="edit icon"></i>
     Edit Profile
 </button>
+<% }; %>
 </div>
+<div class="content" style="padding:0 150px 0 150px;">
+<div class="ui divider"></div>
+
 <div class="ui modal" id="EditProfile-modal">
       <i class="close icon"></i>
       <div class="header">
@@ -42,54 +56,114 @@
             </div>
         </div>
     </div>     
-</div>       
-<% for(var i = 0; i < pages.length; i++) { %>
-        <div class="page" style="float:left; margin-right:20px;">
-            <input class="page-user-id" type="hidden" value="page.user-id">
-            <input class="page-id" type="hidden" value="page-id">
-            <!--UI card views start-->
-            <a class="ui raised link card" href="/pages/<%= pages[i].id%>">
-              <div class="content">
-                <div class="header"> <%= pages[i].title %> </div>
-                <div class="meta">
-                    <% var minTimes = Math.round(((new Date().getTime() - pages[i].createdAt) / 1000)/60) %>
-                    <% if(minTimes<1) { %>
-                        <span class="right floated time"> just ago </span>
-                    <% } %> 
-                    <% if(minTimes>1 && minTimes<60){ %> <!--시간단위로 보여줌-->
-                        <span class="right floated time"> <%= Math.round((minTimes)) %> Minutes ago </span>
-                    <% } %>
-                    <% if(minTimes>60 && minTimes<1440){ %> <!--시간단위로 보여줌-->
-                        <span class="right floated time"> <%= Math.round((minTimes/60)) %> Hours ago </span>
-                    <% } %>
-                    <% if(minTimes>=1440 && minTimes<10080) {%> <!--일단위로 보여줌-->
-                        <span class="right floated time"> <%= Math.round((minTimes/1440)) %> Days ago </span>
-                    <% } %>
-                    <% if(minTimes>=10080 && minTimes<40320) {%> <!--주단위로 보여줌-->
-                        <span class="right floated time"> <%= Math.round((minTimes/10080)) %> Weeks ago </span>
-                    <% } %>
-                    <span class="category">categorys</span>
-                </div>
-                <div class="image">
-                    <% if(pages[i].img) { %>
-                    <div class="page-img">
-                        <img src="<%= pages[i].img %>" alt='Thumbnail' style="max-width: 100%;">
+</div>
+
+<h3 class="ui header">
+Following list <span class="ui basic label"><%= result_user.Followings.length %></span>
+</h3>
+<div class="ui horizontal list">
+<% if(result_user.Followings) {%>
+    <%result_user.Followings.forEach((following) => { %>
+    <div class="item">
+    <% const follow = user && result_user.Followings.map(f => f.id).includes(following.id); %>
+    <input id="myId" type="hidden" value="<%= user.id %>">
+    <input id="page-user-id" type="hidden" value="<%= following.id %>">
+    <div class="ui special cards">
+        <div class="card" style="width:100px;height:130px;">
+            <div class="blurring dimmable image">
+                <div class="ui dimmer">
+                    <div class="content">
+                        <div class="center">
+                            <%if(user && user.id !== following.id && !follow) {%>
+                            <div class="ui inverted button"><div class="userFollow">Follow</div></div>
+                            <% } else { %>
+                            <div class="ui inverted button"><div class="userUnFollow">UnFollow</div></div>
+                            <% } %>
+                        </div>
                     </div>
-                    <% } %>
                 </div>
-              </div>
-              <div class="extra content">
-                <i class="comments outline icon"></i>
-                    3
-                <i class="heart outline like icon"></i>
-                    17
-                <div class="right floated author">
-                  <img class="ui avatar image" src="<%= result_user.img %>"> <%= result_user.username %>
-                </div>
-              </div>
-            </a>
-            <!--UI card views finish-->
-        </div>
-    <% }; %>
+            <img src="<%= following.img %>">
+            </div>
+            <div class="content" style="padding:7px;text-align: center;cursor:pointer;" onclick="location.href='/users/<%= following.username %>'">
+                <div class="header"><%= following.username %></div>
+            </div>
     </div>
-    </div><div style="clear:both:"></div>
+  </div>
+  </div>
+  <% }); %>
+<% } %>
+</div>
+
+
+<div class="ui divider"></div>
+<h3 class="ui header">
+Upload posts <span class="ui basic label"><%= pages.length %></span>
+</h3>
+<div class="ui five cards">
+    <% pages.forEach((page) => {%>
+    <!--UI card views start-->
+    <div class="ui link card" style="margin:20px;height:100%;border-radius:0px;box-shadow:none;">
+      <div class="content" style="padding:0px 0px 0px 0px;">
+         <div class="center aligned header" onclick="location.href='/pages/<%= page.id %>'" style="font-size:25px;cursor:pointer;padding:0px 10px 0px 10px;margin:5px 0px 5px 0px;"><%= page.title %></div>
+        <div class="ui divider" style="margin:0px 0px 5px 0px;"></div>
+        <div class="meta" style="padding:0px 10px 0px 10px;">
+            <% var minTimes = Math.round(((new Date().getTime() - page.createdAt) / 1000)/60) %>
+            <% if(minTimes<1) { %>
+                <span class="right floated time" style="margin-top:6px;"> just ago </span>
+            <% } %> 
+            <% if(minTimes>1 && minTimes<60){ %> <!--시간단위로 보여줌-->
+                <span class="right floated time" style="margin-top:6px;"> <%= Math.round((minTimes)) %> Minutes ago </span>
+            <% } %>
+            <% if(minTimes>60 && minTimes<1440){ %> <!--시간단위로 보여줌-->
+                <span class="right floated time" style="margin-top:6px;"> <%= Math.round((minTimes/60)) %> Hours ago </span>
+            <% } %>
+            <% if(minTimes>=1440 && minTimes<10080) {%> <!--일단위로 보여줌-->
+                <span class="right floated time" style="margin-top:6px;"> <%= Math.round((minTimes/1440)) %> Days ago </span>
+            <% } %>
+            <% if(minTimes>=10080 && minTimes<40320) {%> <!--주단위로 보여줌-->
+                <span class="right floated time" style="margin-top:6px;"> <%= Math.round((minTimes/10080)) %> Weeks ago </span>
+            <% } %>
+            <!--tag 아코디언-->
+            <div class="tag" style="width : 100px;">
+                <div class="ui fluid accordion">
+                    <div class="title">
+                      <i class="dropdown icon"></i>
+                      Tags
+                    </div>
+                    <div class="content" style="padding:0px;text-align: center;">
+                      <span class="transition hidden" style="display:block;">
+                        <% page.hashtags.forEach((hashtag) => {%>
+                            <span class="ui basic labels">
+                                <a class="ui basic label" href="/tag/<%= hashtag.title %>">
+                                    <%= hashtag.title %>
+                                </a>
+                            </span>
+                        <% }); %>
+                      </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="image" onclick="location.href='/pages/<%= page.id %>'" style="cursor:pointer;">
+            <% if(page.img) { %>
+            <div class="page-img">
+                <img src="<%= page.img %>" alt='Thumbnail' style="max-width: 100%;">
+            </div>
+            <% } %>
+        </div>
+      </div>
+      <div class="extra content" style="padding:10px 10px 5px 10px;">
+        <i class="comments outline icon"></i>
+            <%= page.comments.length %>
+        <i class="heart outline icon"></i>
+            <%= page.likes.length %>
+        <div class="right floated author" onclick="location.href='/users/<%= page.user.username %>'" style="cursor:pointer;">
+            <img class="ui avatar image" src="<%= page.user.img %>"> <%= page.user.username %>
+        </div>
+      </div>
+    </div>
+    <!--UI card views finish-->
+    <div style="clear:both:"></div>
+    <% }); %>
+</div>
+</div>

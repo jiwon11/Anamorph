@@ -32,6 +32,7 @@ router.delete('/', isLoggedIn, async(req, res, next) => {
     var userId = req.body.userId;
     var pageId = req.body.pageId;
     console.log(`user[${userId}] likes page[${pageId}]`);
+    
     await Like.destroy({ where: {
         userLike: userId,
         likepage : pageId
