@@ -16,7 +16,7 @@ fs.readdir('profileImg', (error)=> {
 });
 /* GET users listing. */
 
-router.get('/:userId',isLoggedIn, async(req,res,next) => {
+router.get('/:userId', async(req,res,next) => {
   try {
     User.findOne({
       where : { username:req.params.userId },
@@ -31,6 +31,20 @@ router.get('/:userId',isLoggedIn, async(req,res,next) => {
       }],
     })
     .then((user) => {
+      var likePage=[];
+      Like.findAll({
+        where : { userLike : user.id },
+        include : [{
+          model : Page, 
+          include: [User,Hashtag,Comment,Like]
+        }]
+      })
+      .then((likePages) => {
+        likePage.push(likePages);
+      }).catch((error) => {
+        console.error(error);
+        next(error);
+      });
     Page.findAll ({
       where : { userId : user.id },
       include : [{
@@ -47,14 +61,27 @@ router.get('/:userId',isLoggedIn, async(req,res,next) => {
       order : [['createdAt', 'DESC']],
     })
     .then((pages) => {
+      if(req.user) {
       res.render('profile', {
           title : `${user.username} | Anamorph`,
           pages : pages,
           user : req.user,
           result_user : user,
+          likePage : likePage,
           gravatar: gravatar.url(user.email,{s:'80',r:'x',d:'retro'},true),
           logginError : req.flash('loginError'),
-      });
+        });
+      } else {
+        res.render('profile', {
+          title : `${user.username} | Anamorph`,
+          pages : pages,
+          user : req.user,
+          result_user : user,
+          likePage : likePage,
+          gravatar: gravatar.url(user.email,{s:'80',r:'x',d:'retro'},true),
+          logginError : req.flash('loginError'),
+        });
+      }  
     })
     .catch((error) => {
         console.error(error);

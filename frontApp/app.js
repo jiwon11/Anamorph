@@ -19,6 +19,7 @@ const followRouter = require('./server/routes/follow');
 const commentRouter = require('./server/routes/comment');
 const likeRouter = require('./server/routes/like');
 const searchRouter = require('./server/routes/search');
+
 const { sequelize } = require('./models');
 const passportConfig = require('./passport');
 
@@ -31,6 +32,7 @@ app.set('views', path.join(__dirname, '/server/views/pages'));
 app.set('view engine', 'ejs');
 app.engine('html',require('ejs').renderFile);
 app.set('port',process.env.PORT || 8001);
+
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname,'public')));

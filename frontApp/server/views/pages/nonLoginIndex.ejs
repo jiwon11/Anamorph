@@ -7,14 +7,7 @@
     <link rel="icon" href="../images/logo.ico">
   </head>
   <body>
-    
-    <% if(user && user.id) {%>
-    <%- include('../partials/LoginHeader') %> 
-    <%- include('../partials/viewer.ejs') %>
-    <%} else {%>
-      <%- include('../partials/nonLoginHeader') %> 
-      <%- include('../partials/firstHome') %>
-    <% } %>
-
+    <%- include('../partials/nonLoginHeader') %> 
+    <%- include('../partials/nonLoginpages') %>
     <%- include('../partials/footer') %>
     <%- include('../partials/javascript') %>

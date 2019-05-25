@@ -46,7 +46,6 @@ router.post('/post', isLoggedIn, upload2.none(), async (req, res, next) => {
         });
         const Hashtags = req.body.tags;
         const splitHashtags = Hashtags.split(',');
-        console.log(splitHashtags);
         if (splitHashtags) {
             const result = await Promise.all(splitHashtags.map(tag => Hashtag.findOrCreate({
                 where : { title : tag.toLowerCase() },

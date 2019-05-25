@@ -27,8 +27,11 @@ router.get('/:tag', async (req, res, next) => {
                 }, ],
                 order : [['createdAt','DESC']],
                 });
-            follow = await hashtag.getUsers({where : {id : req.user.id }});
+                if(req.user) {
+                    follow = await hashtag.getUsers({where : {id : req.user.id }});
+                }
         }
+        if(req.user) {
         return res.render('index', {
             title : `${tag} | Anamorph`,
             user : req.user,
@@ -36,7 +39,15 @@ router.get('/:tag', async (req, res, next) => {
             tags : tag,
             follow : follow,
             loginError : req.flash('loginError'),
-        });
+            });
+        } else {
+            return res.render('nonLoginIndex', {
+                title : `${tag} | Anamorph`,
+                pages : pages, 
+                tags : tag,
+                loginError : req.flash('loginError'),
+                });
+        }
     } catch (error) {
         console.error(error);
         return next(error);

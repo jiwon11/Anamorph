@@ -10,7 +10,7 @@ const Op = sequelize.Op;
 
 const router = express.Router();
 
-router.get('/:query', isLoggedIn, async(req,res,next) => {
+router.get('/:query', async(req,res,next) => {
     let searchWord = req.params.query;
     var results = {};
     await Hashtag.findAll({
@@ -21,7 +21,9 @@ router.get('/:query', isLoggedIn, async(req,res,next) => {
         }
     })
     .then( result => {
+        if(result.length !== 0){
         results['tags'] = result;
+        }
     })
     .catch( err => {
         console.log(err);
@@ -35,7 +37,9 @@ router.get('/:query', isLoggedIn, async(req,res,next) => {
         attributes : ['id', 'username','img'],
     })
     .then( result => {
+        if(result.length !== 0){
         results['user'] = result;
+        }
         res.json(results);
     })
     .catch( err => {

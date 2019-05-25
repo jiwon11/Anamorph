@@ -1,5 +1,5 @@
 <!-- Fixed navbar -->
-<div class="ui massive secondary menu">
+<div class="ui massive secondary menu" id="nevbar">
         <% if(user && user.id) {%>
         <a class="item" id="logo" href="/"><img src="../images/logo.png" id="logo_img"></a>
         <% } else {%>
@@ -9,9 +9,10 @@
         <% } %>
             <div class="ui search" style="margin-top:5px;">
                 <div class="ui small left icon input">
-                  <input class="prompt" type="text" placeholder="Search" style="border-radius:0px;">
+                  <input class="prompt" type="text" placeholder="Search" style="border-radius:5px;">
                   <i class="search icon"></i>
                 </div>
+                <div class="results elements"></div>
               </div>
         <a class="item" href="/">Recents</a>
         <a class="item" href="/follow">Follow</a>
@@ -26,18 +27,8 @@
             </div>
         </div>
         <div class="right menu">
-              <div class="notice" style="margin-right:30px;margin-top:13px;height:70%;">
-                <div class="ui compact menu" style="border:none;border-radius:0px;box-shadow:none;">
-                  <a class="item">
-                    <i class="icon mail"></i>
-                    <div class="floating ui red label">22</div>
-                  </a>
-                  <a class="item">
-                    <i class="icon bell"></i>
-                    <div class="floating ui teal label">22</div>
-                  </a>
-                </div>
-              </div>
+              
+        </div>
               <div class="massive ui dropdown item" style='width:200px;height:50px;padding:0px; !important'>
               <% if(user.img){ %>
               <img src="<%= user.img %>" style="margin-right : 10px; height:50px; width:50px; !important">
@@ -52,5 +43,5 @@
             </div>
         </div>
 </div>
-<div class="ui divider" style="margin:5px 0 0 0;"></div>
+<div class="ui divider" style="margin:5px 0 10px; 0;"></div>
 <!-- Fixed navbar -->

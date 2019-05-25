@@ -1,6 +1,7 @@
 body {
   padding: 10px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: AppleLiGothicMedium;
+  font: 14px,Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -12,7 +13,7 @@ a {
   margin-right: 20px;
 }
 #logo_img {
-  width: 50px;
+  width: 200px;
   height: 50px;
 }
 .ui.search{ 
@@ -35,4 +36,8 @@ a {
 
 .ui.dropdown .menu {
   z-index: 999999 !important;
+}
+
+#nevbar {
+  background-color: white;
 }

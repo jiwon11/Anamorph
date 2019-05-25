@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - glTF loader</title>
+		<meta charset="utf-8">
+    
+	</head>
+
+	<body>
+    <div class="webViewer" style="width:1280px;heigth:720px;">
+    </div>
+    <div class="stage" id="stage">
+    <h2 class="ui header">
+      <i class="film icon"></i>
+      <div class="content" id="animeName">
+      
+      </div>
+    </h2>
+    <button class="compact ui icon button" id="anime_button" value="pause">
+    <i class="pause circle icon"></i>
+    </button>
+    <span class="process"> 
+      <span id="processNow"></span>
+    </span>
+    </div>
+
+<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<script src="../frontApp/public/javascripts/semantic.min.js"></script>
+
+<link rel='stylesheet prefetch' href='http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/css/semantic.min.css'>
+  
+  
+<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/components/icon.min.css'>
+  <!-- Three.js -->
+  <script src="./public/js/three.min.js"></script>
+
+  <!-- Library for controlling the camera -->
+  <script src="./public/js/OrbitControls.js"></script>
+
+  <!-- library to handle glTF -->
+  <script src="./public/js/GLTFLoader.js"></script>
+  <script src="./public/js/stats.min.js"></script>
+  <script src="./public/js/TimelinerController.js"></script>
+  <script src="./public/js/timeliner_gui.min.js"></script>
+  <link href="http://vjs.zencdn.net/5.4.4/video-js.css" rel="stylesheet">
+  <script src="http://vjs.zencdn.net/5.4.4/video.js"></script>
+  <script src="./public/js/index.js"></script>
+	</body>
+</html>

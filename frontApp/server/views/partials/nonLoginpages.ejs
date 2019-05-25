@@ -1,90 +1,60 @@
-<!--
-<h1> User Name : <%= user.username %> </h1>
-<h1> Num of pages : <%= pages.length %> </h1>
-<% if(typeof(tags) === 'string') {%>
-<h1><%= follow.length %></h1>
-<% } %>
--->
-<% if(user) {%>
-    <div class="timeline">
-    <div class="upload-btn">
-    <button class=" fluid ui right labeled icon button" id="upload-btn">
-    <i class="upload icon"></i>
-    Upload
-    </button>
-    </div>
-    <div class="ui modal" id="upload-modal">
-      <i class="close icon"></i>
-      <div class="header">
-        Upload Model
-      </div>
-      <div class="image content">
-        <div class="image">
-            <div class="ui medium image">
-                <img id="img-preview" src="#" alt="preview" style="display : none;"/>
-            </div>
-        </div>
-        <div class="description">
-            <form class="ui form" action="/pages/post" method="post" enctype="multipart/form-data">
-            <input id="img-url" type="hidden" name="url">
-            <div class="field">
-                <label>Title</label>
-                <input type="text" name="title">
-            </div>
-            <div class="field">
-                <label>content</label>
-                <textarea rows="2"name="content" maxlength="140"></textarea>
-            </div>
-            <div class="field">
-            <label class="img-label" for="img">Image Upload</label>
-            <input id="imgInp" type="file" accept="image/*">
-            <div class="ui sub header">Tags</div>
-            <div class="ui fluid multiple search selection dropdown">
-              <input name="tags" type="hidden">
-              <i class="dropdown icon"></i>
-              <div class="default text">Tags</div>
-              <div class="menu">
-              <% for(var i=0; i<tags.length; i++){%>
-                <div class="item" data-value="<%= tags[i].title %>"> <%= tags[i].title %> </div>
-            <% } %>
+<div class="timeline">
+<div class="container" style="width:50%; margin-left:25%;">
+  <div class="ui placeholder segment">
+      <div class="ui middle aligned two column grid">
+        <div class="column">
+          <form action="/process/login" method="POST">
+          <div class="ui form error">
+            <div class="field" id="username-field">
+              <label>Email</label>
+              <div class="ui left icon input">
+                <input type="email" name='email' placeholder="Email" required>
+                <i class="user icon"></i>
               </div>
             </div>
-            <div class="ui button" id="tag-clear-btn">
-              Clear
+            <div class="field" id="password-field">
+              <label>Password</label>
+              <div class="ui left icon input">
+                <input type="password" name="password" required>
+                <i class="lock icon"></i>
+              </div>
             </div>
+          </form>
+            <div class="ui blue submit button">
+              <button class="ui blue button" type="submit">Login</button>
             </div>
-            </div>
-            <div class="actions">
-            <div class="ui cancel button">Cancel</div>
-            <button class="ui positive right labeled icon button" type="submit">
-            Submit
-            <i class="checkmark icon"></i>
-            </button>
-            </div>
-            </form>
-            </div>
+          </div>
         </div>
-    </div>
+        <div class="middle aligned column">
+          <div class="ui big button" onclick="location.href='/signup'" style="cursor:pointer;">
+            <i class="signup icon"></i>
+            Sign Up
+          </div>
+        </div>
+      </div>
+      <div class="ui vertical divider">
+        Or
+      </div>
+  </div>
+  <% if(loginError.length !== 0) {%>
+            <div class="ui error icon message">
+            <i class="close icon"></i>
+              <i class="ban icon"></i>
+              <div class="content">
+                <div class="header">
+                  <%= loginError %>
+                </div>
+              </div>
+            </div>
+    <% } %>
+</div>
+
     <div class="ui center aligned header" style="margin:10px;">
     <% if(typeof(tags) === 'string') {%>
     <h1 style="display : inline;"> <%= tags %> </h1>
     <input id="tag-title" type="hidden" value="<%= tags %>">
-    <% } %>
-    
-<% if(typeof(tags) === 'string') {%>
-    <%if (follow.length === 1) {%>
-        <button class="ui basic active button" id="tagUnFollow">
-            <i class="tag icon"></i>
-            Following
-          </button>
-    <% } else {%>
-    <button class="ui basic active button" id="tagFollow">
-              <i class="tag icon"></i>
-              Follow
-            </button>
-    <% } %>
-<% } %>
 </div>
+
     <div class="ui five cards">
     <% pages.forEach((page) => {%>
     <!--UI card views start-->

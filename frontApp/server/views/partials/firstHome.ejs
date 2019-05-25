@@ -3,7 +3,7 @@
       <div class="ui middle aligned two column grid">
         <div class="column">
           <form action="/process/login" method="POST">
-          <div class="ui form">
+          <div class="ui form error">
             <div class="field" id="username-field">
               <label>Email</label>
               <div class="ui left icon input">
@@ -35,4 +35,15 @@
         Or
       </div>
   </div>
+  <% if(loginError.length !== 0) {%>
+            <div class="ui error icon message">
+            <i class="close icon"></i>
+              <i class="ban icon"></i>
+              <div class="content">
+                <div class="header">
+                  <%= loginError %>
+                </div>
+              </div>
+            </div>
+    <% } %>
 </div>

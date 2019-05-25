@@ -1,12 +1,13 @@
 <!-- Fixed navbar -->
-<div class="ui secondary menu">
+<div class="ui massive secondary menu">
         <a class="item" id="logo" href="/"><img src="../images/logo.png" id="logo_img"></a>
-        <div class="item" id="search_bar_contain">
-            <div class="ui big icon input" id="search_bar">
-              <input type="text" placeholder="Search...">
-              <i class="search icon"></i>
-            </div>
-        </div>
+        <div class="ui search" style="margin-top:5px;">
+                <div class="ui small left icon input">
+                  <input class="prompt" type="text" placeholder="Search" style="border-radius:5px;">
+                  <i class="search icon"></i>
+                </div>
+                <div class="results elements"></div>
+              </div>
         <div class="ui dropdown item">
             More
             <i class="dropdown icon"></i>
@@ -20,5 +21,5 @@
             <button class="ui inverted black button" onclick="location.href='/signup'">SignUp</button>
         </div>
       </div>
-
+<div class="ui divider" style="margin:5px 0 10px; 0;"></div>
 <!-- Fixed navbar -->
