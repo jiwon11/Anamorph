@@ -3,6 +3,8 @@ const anime_button = document.getElementById('anime_button');
 const processNow = document.getElementById('processNow');
 const webViewer = document.querySelector('.webViewer');
 const animeName = document.querySelector('#animeName');
+const viewer = document.querySelector('.viewer');
+const timeSlider = document.querySelector('#timeSlider');
 const width  = 1280;//window.innerWidth;
 const height = 720;//window.innerHeight;
 
@@ -13,15 +15,15 @@ var playtime = 0;
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(width, height);
 renderer.setClearColor("#222222", 1.0);
-webViewer.appendChild(renderer.domElement);
-const viewer = document.querySelector('canvas');
-
+viewer.appendChild(renderer.domElement);
+webViewer.appendChild(viewer);
 
 
 // Create scenes, create and add cameras, create and add lights
 const scene  = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(50, width / height, 1, 100 );
+const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000 );
 camera.position.set(10,10,10);
+console.log(camera);
 const light  = new THREE.AmbientLight(0xffffff, 1);
 scene.add(light);
 
@@ -52,7 +54,7 @@ loader.load(url, (data) => {
   }
 
   scene.add(object);
-
+  timeSlider.max=modelduration.toFixed(2);
 });
 
 // OrbitControls Add
@@ -61,7 +63,7 @@ controls.userPan = false;
 controls.userPanSpeed = 0.0;
 controls.maxDistance = 10000.0;
 controls.minDistance = 1.0;
-controls.maxPolarAngle = Math.PI * 0.495;
+controls.maxPolarAngle = Math.PI * 1;
 controls.autoRotate = false;
 controls.autoRotateSpeed = 1.0;
 
@@ -71,13 +73,17 @@ controls.autoRotateSpeed = 1.0;
 const clock  = new THREE.Clock();
 let mixer;
 stats = new Stats();
-stats.domElement.style.position="relative";
+stats.domElement.style.position="absolute";
 stats.domElement.style.float="left";
 stats.domElement.style.display="inline";
-stats.domElement.style.top=`-${height}px`;
-webViewer.appendChild( stats.domElement );
+//stats.domElement.style.top=`-${height}px`;
+viewer.appendChild( stats.domElement );
 
-
+function startAt(startTime) {
+  startTime = Number(startTime);
+  mixer._actions[0].reset();
+  mixer.update(startTime);
+}
 // rendering
 const animation = () => {
   renderer.gammaOutput = true;
@@ -101,8 +107,14 @@ const animation = () => {
         anime_button.innerHTML = `<i class="pause circle icon"></i>`;
       });
     }
+    if(processTime.toFixed(2)<10){
+      processNow.innerHTML = `0${processTime.toFixed(2)} / ${modelduration.toFixed(2)}`;
+    } else {
+      processNow.innerHTML = `${processTime.toFixed(2)} / ${modelduration.toFixed(2)}`;
+    }
+    timeSlider.value=processTime.toFixed(2);
+    console.log();
     stats.update();
-    processNow.innerHTML = `${processTime.toFixed(2)} / ${modelduration.toFixed(2)}`;
   }
 
   requestAnimationFrame(animation);
