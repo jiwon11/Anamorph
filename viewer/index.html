@@ -3,12 +3,47 @@
 	<head>
 		<title>three.js webgl - glTF loader</title>
 		<meta charset="utf-8">
-    
+    <style>
+      #timeSlider{
+        -webkit-appearance: none;
+        width: 100%;
+        height: 3px;
+        margin-bottom: 10px;
+        display:block;
+        position:relative;
+        cursor:pointer;
+        border-radius: 5px;
+        outline: none;
+        background: #d3d3d3;
+      }
+      #timeSlider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+        /*background: url('contrasticon.png');*/
+        cursor: pointer;
+        background: #00FFFF;
+      }
+    </style>
 	</head>
 
 	<body style="margin:10px;">
-    <div class="webViewer">
-      <div class="viewer" style="position:relative;cursor:move;">
+    <div class="webViewer" style="position:relative;">
+      <div class="viewer" style="position:relative;width: 1280px;height:720px;">
+          <div id="infor" style="visibility: hidden; position: absolute; bottom:0%;width:100%;opacity:1;padding:0 20px 0 20px;">
+              <input id="timeSlider" value="" step="0.01" type="range" oninput="startAt(this.value)"/>
+              <div class="processer" style="margin-bottom:10px; padding:0 10px 0 10px;">
+              <button class="compact ui icon button" id="anime_button" value="pause">
+                  <i class="pause circle icon"></i>
+                </button>
+              <span class="process" style="position:relative;margin-left:5px;"> 
+                  <p id="processNow" style="display:inline;color:white;"></p>
+                  </div>
+                </span>
+              </div>
+          </div>
       </div>
     </div>
     <div class="info">
@@ -20,14 +55,21 @@
         </div>
       </h2>
       <div class="progress">
-        <button class="compact ui icon button" id="anime_button" value="pause">
-          <i class="pause circle icon"></i>
-        </button>
-        <span class="process" style="position:relative;"> 
-          <p id="processNow" style="display:inline;"></p>
-          <input id="timeSlider" value="" step="0.01" type="range" oninput="startAt(this.value)" style="width:720px;position:absolute;margin:7px 0 0 5px;"/>
+        <div class="control" style="margin-top: 10px;">
+          <div class="ui checkbox" id="showSkeleton" style="margin-right: 10px;">
+            <label>SHOW Skeleton</label>
+            <input type="checkbox">
           </div>
-        </span>
+          <div class="ui checked checkbox" id="showGrid" style="margin-right: 10px;">
+            <label>SHOW Grid</label>
+            <input type="checkbox" checked="">
+          </div>
+          <div class="modifyTimeScale" style="margin-top: 10px;">
+            <label style="margin-right:5px;">modify Time Scale (0~x2)</label>
+            <input id="TimeScaleInputId" type="range" min="0" max="2" value="1" step="0.01" oninput="modifyTimeScale(this.value);TimeScaleOutputId.value = TimeScaleInputId.value;">
+            <output id="TimeScaleOutputId" style="margin-left:5px;">1</output>
+          </div>
+        </div>
         </div>
       </div>
     </div>
@@ -49,7 +91,34 @@
   <script src="./public/js/index.js"></script>
 
   <script>
-
+    $('#showSkeleton')
+  .checkbox()
+  .first().checkbox({
+    onChecked: function() {
+      showSkeleton();
+    },
+    onUnchecked: function() {
+      nonShowSkeleton();
+    }
+  });
+      $('#showGrid')
+  .checkbox()
+  .first().checkbox({
+    onChecked: function() {
+      showGrid();
+    },
+    onUnchecked: function() {
+      nonShowGrid();
+    }
+  });
+  $('.viewer').hover(function(){
+    $('#infor').css( "visibility","visible");
+    $('.stats').css( "visibility","visible");
+  },
+  function(){
+    $('#infor').css("visibility","hidden");
+    $('.stats').css("visibility","hidden");
+  });
   </script>
 	</body>
 </html>

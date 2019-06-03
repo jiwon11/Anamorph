@@ -5,6 +5,7 @@ const webViewer = document.querySelector('.webViewer');
 const animeName = document.querySelector('#animeName');
 const viewer = document.querySelector('.viewer');
 const timeSlider = document.querySelector('#timeSlider');
+const infor = document.querySelector('#infor');
 const width  = 1280;//window.innerWidth;
 const height = 720;//window.innerHeight;
 
@@ -22,24 +23,27 @@ webViewer.appendChild(viewer);
 // Create scenes, create and add cameras, create and add lights
 const scene  = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000 );
-camera.position.set(10,10,10);
-console.log(camera);
+camera.position.set(30,30,30);
 const light  = new THREE.AmbientLight(0xffffff, 1);
 scene.add(light);
 
 // Create and add meshes
 
-const grid   = new THREE.GridHelper(1000, 500);
+const grid   = new THREE.GridHelper(50,50);
 scene.add(grid);
 
 const loader = new THREE.GLTFLoader();
 
 const url = 'public/GLTF/scene.gltf';
 loader.setCrossOrigin();
+
 loader.load(url, (data) => {
   const gltf = data;
-  gltf.scene.scale.set(0.3,0.3,0.3);
   const object = gltf.scene;
+  camera.lookAt(object.position);
+  skeleton = new THREE.SkeletonHelper( object );
+  skeleton.visible = false;
+  scene.add( skeleton );
   const animations = gltf.animations;
   if (animations && animations.length) {
 
@@ -57,6 +61,21 @@ loader.load(url, (data) => {
   timeSlider.max=modelduration.toFixed(2);
 });
 
+function showSkeleton() {
+  skeleton.visible = true;
+}
+function nonShowSkeleton() {
+  skeleton.visible = false;
+}
+function showGrid() {
+  grid.visible = true;
+}
+function nonShowGrid() {
+  grid.visible = false;
+}
+function modifyTimeScale(timeScale) {
+  mixer.timeScale = timeScale;
+}
 // OrbitControls Add
 const controls = new THREE.OrbitControls( camera, renderer.domElement );
 controls.userPan = false;
@@ -66,6 +85,7 @@ controls.minDistance = 1.0;
 controls.maxPolarAngle = Math.PI * 1;
 controls.autoRotate = false;
 controls.autoRotateSpeed = 1.0;
+controls.screenSpacePanning = true;
 
 //Now that the controls.autoRotate = true; the camera will automatically rotate. 
 //Mouse drag and arrow keys are also available.
@@ -76,6 +96,7 @@ stats = new Stats();
 stats.domElement.style.position="absolute";
 stats.domElement.style.float="left";
 stats.domElement.style.display="inline";
+stats.domElement.classList.add("stats");
 //stats.domElement.style.top=`-${height}px`;
 viewer.appendChild( stats.domElement );
 
