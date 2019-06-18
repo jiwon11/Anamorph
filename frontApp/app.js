@@ -19,6 +19,7 @@ const followRouter = require('./server/routes/follow');
 const commentRouter = require('./server/routes/comment');
 const likeRouter = require('./server/routes/like');
 const searchRouter = require('./server/routes/search');
+const cloudStorageRouter = require('./server/routes/cloudStorage');
 
 const { sequelize } = require('./models');
 const passportConfig = require('./passport');
@@ -63,6 +64,7 @@ app.use('/follow',followRouter);
 app.use('/comment',commentRouter);
 app.use('/like',likeRouter);
 app.use('/search',searchRouter);
+app.use('/cloudStorage',cloudStorageRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

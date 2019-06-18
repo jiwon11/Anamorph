@@ -38,10 +38,20 @@
               <button class="compact ui icon button" id="anime_button" value="pause">
                   <i class="pause circle icon"></i>
                 </button>
-              <span class="process" style="position:relative;margin-left:5px;"> 
+                <span class="process" style="position:relative;margin-left:5px;"> 
                   <p id="processNow" style="display:inline;color:white;"></p>
-                  </div>
                 </span>
+                  <div class="ShowControl" style="text-align:right;">
+                    <span class="ui checkbox" id="showSkeleton" style="margin-left:10px;">
+                      <label style="color: white;">SHOW Skeleton</label>
+                      <input type="checkbox">
+                    </span>
+                    <span class="ui checked checkbox" id="showGrid" style="margin-left:10px;">
+                      <label style="color: white;">SHOW Grid</label>
+                      <input type="checkbox" checked="">
+                    </span>
+                  </div>
+                </div>
               </div>
           </div>
       </div>
@@ -55,15 +65,6 @@
         </div>
       </h2>
       <div class="progress">
-        <div class="control" style="margin-top: 10px;">
-          <div class="ui checkbox" id="showSkeleton" style="margin-right: 10px;">
-            <label>SHOW Skeleton</label>
-            <input type="checkbox">
-          </div>
-          <div class="ui checked checkbox" id="showGrid" style="margin-right: 10px;">
-            <label>SHOW Grid</label>
-            <input type="checkbox" checked="">
-          </div>
           <div class="modifyTimeScale" style="margin-top: 10px;">
             <label style="margin-right:5px;">modify Time Scale (0~x2)</label>
             <input id="TimeScaleInputId" type="range" min="0" max="2" value="1" step="0.01" oninput="modifyTimeScale(this.value);TimeScaleOutputId.value = TimeScaleInputId.value;">

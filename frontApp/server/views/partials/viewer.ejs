@@ -7,7 +7,7 @@
 <div id="content" style="margin-top:10px;">
         <section id="main_section">
             <article class="main_article" style="background-color : black;">
-                <img src="<%= page.img %>" > 
+                <img src="<%= page.img %>"> 
             </article>
         </section>
         <aside id="main_aside">
@@ -111,11 +111,15 @@
                 </h1>
                 <h1>Tags</h1>
                 <% for( var i=0; i<page.hashtags.length;i++) {%>
+                <%if(page.hashtags[i].title.length !==0) {%>
                 <span class="ui basic labels">
                     <a class="ui basic label" href="/tag/<%= page.hashtags[i].title %>">
                         <%= page.hashtags[i].title %>
                     </a>
                 </span>
+                <%} else{%>
+                    <p>No Tags!!</p>
+                <% } %>
                 <% } %>
             </div>
             <div class="tab_item" id="tab_comment" style="margin: 20px;" >

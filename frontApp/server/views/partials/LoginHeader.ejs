@@ -1,11 +1,11 @@
 <!-- Fixed navbar -->
 <div class="ui massive secondary menu" id="nevbar">
         <% if(user && user.id) {%>
-        <a class="item" id="logo" href="/"><img src="../images/logo.png" id="logo_img"></a>
+        <a class="item" id="logo" href="/"><img src="../images/imageassss.png" id="logo_img"></a>
         <% } else {%>
         <% req.logOut(); %>
         <% req.session.destroy(); %>
-        <a class="item" id="logo" href="/"><img src="../images/logo.png" id="logo_img"></a>
+        <a class="item" id="logo" href="/"><img src="../images/imageassss.png" id="logo_img"></a>
         <% } %>
             <div class="ui search" style="margin-top:5px;">
                 <div class="ui small left icon input">
@@ -38,6 +38,7 @@
               <%= user.username %> <i class="dropdown icon"></i>
               <div class="menu">
                 <a class="item" href="/users/<%= user.username %>">profile</a>
+                <a class="item" href="/cloudStorage">Cloud Storage</a>
                 <a class="item" href="/process/logout">logout</a>
               </div>
             </div>

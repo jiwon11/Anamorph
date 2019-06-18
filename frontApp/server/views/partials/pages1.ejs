@@ -44,9 +44,9 @@
               <i class="dropdown icon"></i>
               <div class="default text">Tags</div>
               <div class="menu">
-              <% for(var i=0; i<tags.length; i++){%>
-                <div class="item" data-value="<%= tags[i].title %>"> <%= tags[i].title %> </div>
-            <% } %>
+                    <% for(var i=0; i<tags.length; i++){%>
+                        <div class="item" data-value="<%= tags[i].title %>"> <%= tags[i].title %> </div>
+                    <% } %>
               </div>
             </div>
             <div class="ui button" id="tag-clear-btn">
@@ -85,12 +85,13 @@
     <% } %>
 <% } %>
 </div>
-    <div class="ui five cards">
+    <div class="ui six column doubling stackable masonry grid" style="margin:10px 50px 30px 50px;">
     <% pages.forEach((page) => {%>
     <!--UI card views start-->
-    <div class="ui link card" style="margin:20px;height:100%;border-radius:0px;box-shadow:none;">
+    <div class="column" style="padding:10px;">
+    <div class="ui link card" style="height:100%;border-radius:0px;"><!--box-shadow:none;-->
       <div class="content" style="padding:0px 0px 0px 0px;">
-         <div class="center aligned header" onclick="location.href='/pages/<%= page.id %>'" style="font-size:25px;cursor:pointer;padding:0px 10px 0px 10px;margin:5px 0px 5px 0px;"><%= page.title %></div>
+         <div class="center aligned" onclick="location.href='/pages/<%= page.id %>'" style="font-size:20px;cursor:pointer;padding:0px 10px 0px 10px;margin:5px 0px 5px 0px;"><%= page.title %></div>
         <div class="ui divider" style="margin:0px 0px 5px 0px;"></div>
         <div class="meta" style="padding:0px 10px 0px 10px;">
             <% var minTimes = Math.round(((new Date().getTime() - page.createdAt) / 1000)/60) %>
@@ -126,9 +127,13 @@
                       <span class="transition hidden" style="display:block;">
                         <% page.hashtags.forEach((hashtag) => {%>
                             <span class="ui basic labels">
+                            <%if(hashtag.title.length !==0) {%>
                                 <a class="ui basic label" href="/tag/<%= hashtag.title %>">
                                     <%= hashtag.title %>
                                 </a>
+                            <% } else {%>
+                                    <a>No Tags!!</a>
+                            <% } %>
                             </span>
                         <% }); %>
                       </span>
@@ -139,7 +144,7 @@
         <div class="image" onclick="location.href='/pages/<%= page.id %>'" style="cursor:pointer;">
             <% if(page.img) { %>
             <div class="page-img">
-                <img src="<%= page.img %>" alt='Thumbnail' style="max-width: 100%;">
+                <img src="<%= page.img %>" alt='Thumbnail' style="height: 100%;position: absolute;overflow: hidden;position: relative;width: 100%;">
             </div>
             <% } %>
         </div>
@@ -155,7 +160,7 @@
       </div>
     </div>
     <!--UI card views finish-->
-    <div style="clear:both:"></div>
+    </div>
     <% }); %>
 </div>
     </div>
