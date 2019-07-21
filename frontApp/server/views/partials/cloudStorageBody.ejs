@@ -1,0 +1,134 @@
+<div class="content" style="padding:30px 150px 30px; 150px;">
+<h1 class="ui center aligned icon header">
+<i class="circular cloud icon"></i>
+My Cloud Storage
+</h1>
+</div>
+
+<div class="ui divider" style="margin:0 150px 0 150px;"></div>
+<div class="cloudStorage" style="margin:0 150px 0 150px;">
+    <div class="helper" style="margin-top:10px;width:23%;display:inline-block;">
+        <div class="userInfo">
+            <% if(user.img){ %>
+                <img class="ui mini circular image" src="<%= user.img %>" style="margin-right:10px;display:inline;height:50px;width:50px;">
+            <% } else {%>
+                <img class="ui mini circular image" src="<%= gravatar %>" style="margin-right:10px;display:inline;height:50px;width:50px;">
+            <% } %>
+            <div class="ui sub header" style="display:inline;">
+                <%=user.username%>
+            </div>
+        </div>
+        <div class="toreflex" style="margin-top:30px;">
+            <h1 class="ui header">
+            To Reflex
+            </h1>
+            <button class="ui right labeled icon button" id="toReflexBtn">
+                <i class="up arrow icon"></i>
+                <div class="modelTitle">Model</div>
+            </button>
+        </div>
+    </div>
+    <div class="ui divided items" style="display:inline-block;width:75%;float:right;">
+        <div class="item">
+            <div class="image">
+            <img src="../images/doctorstrange.gif">
+            </div>
+            <div class="content">
+            <a class="header title">Doctor Strange Magic-circle Effect</a>
+            <div class="meta">
+                <span class="maker">Kimjinwoo</span>
+            </div>
+            <div class="description">
+                <p></p>
+            </div>
+            <div class="extra">
+                <div class="ui label">Doctor Strange</div>
+                <div class="ui label">Marvel</div>
+                <div class="ui label">Avengers: Endgame</div>
+                <div class="ui label">Effect</div>
+                <div class="ui label">relfex</div>
+                <div class="ui label">For figure</div>
+                <div class="ui right floated checkbox header">
+                    <input type="checkbox" name="checkbox" onClick="check(this)" value="Doctor Strange Magic-circle Effect">
+                    <label>Checked</label>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="item">
+            <div class="image">
+            <img src="../images/ironman.gif">
+            </div>
+            <div class="content">
+            <a class="header title">iron man repulsors beam effect</a>
+            <div class="meta">
+                <span class="maker">Kimjinwoo</span>
+            </div>
+            <div class="description">
+                <p></p>
+            </div>
+            <div class="extra">
+                <div class="ui label">IronMan</div>
+                <div class="ui label">Marvel</div>
+                <div class="ui label">Avengers: Endgame</div>
+                <div class="ui label">Effect</div>
+                <div class="ui label">reflex</div>
+                <div class="ui label">For figure</div>
+                <div class="ui right floated checkbox header">
+                    <input type="checkbox" name="checkbox" onClick="check(this)" value="iron man repulsors beam effect">
+                    <label>Checked</label>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image">
+                <img src="../images/unitychan.gif">
+            </div>
+            <div class="content">
+                <a class="header title">Unity-Chan Dance</a>
+            <div class="meta">
+                <span class="maker">Kimjinwoo</span>
+            </div>
+            <div class="description">
+                <p></p>
+            </div>
+            <div class="extra">
+                <div class="ui label">mmd</div>
+                <div class="ui label">animation</div>
+                <div class="ui label">motion</div>
+                <div class="ui label">Unity-chan</div>
+                <div class="ui right floated checkbox header">
+                    <input type="checkbox" name="checkbox" onClick="check(this)" value="Unity-Chan Dance">
+                    <label>Checked</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="item">
+            <div class="image">
+                <img src="../images/racingmiku2011.png">
+            </div>
+            <div class="content">
+                <a class="header title">Racing Miku Dance</a>
+            <div class="meta">
+                <span class="maker">Kimjinwoo</span>
+            </div>
+            <div class="description">
+                <p></p>
+            </div>
+            <div class="extra">
+                <div class="ui label">mmd</div>
+                <div class="ui label">animation</div>
+                <div class="ui label">motion</div>
+                <div class="ui label">miku</div>
+                <div class="ui label">racing miku</div>
+                <div class="ui right floated checkbox header">
+                    <input type="checkbox" name="checkbox" onClick="check(this)" value="Racing Miku Dance">
+                    <label>Checked</label>
+                </div>
+            </div>
+        </div>   
+</div>
+</div>
+</div>

@@ -13,29 +13,34 @@ const height = 720;//window.innerHeight;
 var modelduration = 0;
 var playtime = 0;
 // Create renderer, add to DOM
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({alpha:true});
 renderer.setSize(width, height);
-renderer.setClearColor("#222222", 1.0);
+renderer.setClearColor("#1f1f1f", 1.0);
 viewer.appendChild(renderer.domElement);
 webViewer.appendChild(viewer);
 
 
 // Create scenes, create and add cameras, create and add lights
 const scene  = new THREE.Scene();
+function showbg() {
+  scene.background = new THREE.TextureLoader().load('https://images.pexels.com/photos/1205301/pexels-photo-1205301.jpeg');
+}
+function nonshowbg() {
+  scene.background = null;
+}
 const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000 );
 camera.position.set(30,30,30);
 const light  = new THREE.AmbientLight(0xffffff, 1);
 scene.add(light);
 
-// Create and add meshes
 
 const grid   = new THREE.GridHelper(50,50);
-scene.add(grid);
 
-const loader = new THREE.GLTFLoader();
 
+var loader = new THREE.GLTFLoader();
 const url = 'public/GLTF/scene.gltf';
 loader.setCrossOrigin();
+
 
 loader.load(url, (data) => {
   const gltf = data;
@@ -68,6 +73,7 @@ function nonShowSkeleton() {
   skeleton.visible = false;
 }
 function showGrid() {
+  scene.add(grid);
   grid.visible = true;
 }
 function nonShowGrid() {
@@ -107,6 +113,7 @@ function startAt(startTime) {
 }
 // rendering
 const animation = () => {
+  renderer.gammaInput = true;
   renderer.gammaOutput = true;
   renderer.render(scene, camera);
   controls.update();

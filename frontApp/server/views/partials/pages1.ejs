@@ -155,7 +155,11 @@
         <i class="heart outline icon"></i>
             <%= page.likes.length %>
         <div class="right floated author" onclick="location.href='/users/<%= page.user.username %>'" style="cursor:pointer;">
-            <img class="ui avatar image" src="<%= page.user.img %>"> <%= page.user.username %>
+            <% if(page.user.img){ %>
+                <img class="ui avatar image" src="<%= page.user.img %>"> <%= page.user.username %>
+            <% } else {%>
+                <img class="ui avatar image" src="<%= page.user.img %>"> <%= page.user.username %>
+            <% } %>
         </div>
       </div>
     </div>
