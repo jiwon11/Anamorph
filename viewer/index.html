@@ -26,6 +26,7 @@
         cursor: pointer;
         background: #00FFFF;
       }
+      
     </style>
 	</head>
 
@@ -41,19 +42,30 @@
                 <span class="process" style="position:relative;margin-left:5px;"> 
                   <p id="processNow" style="display:inline;color:white;"></p>
                 </span>
-                  <div class="ShowControl" style="text-align:right;">
-                    <span class="ui checkbox" id="showSkeleton" style="margin-left:10px;">
-                      <label style="color: white;">SHOW Skeleton</label>
-                      <input type="checkbox">
-                    </span>
-                    <span class="ui checked checkbox" id="showGrid" style="margin-left:10px;">
-                      <label style="color: white;">SHOW Grid</label>
-                      <input type="checkbox" checked="">
-                    </span>
-                  </div>
+                  <span class="ShowControl" style="float:right;margin-top:3px;">
+                    <span class="ui icon bottom dropdown">
+                        <i class="cog icon" style="color: #d3d3d3;"></i>
+                          <div class="menu" style="margin-bottom:30px;left:-200px;background-color:rgba(0,0,0,0.3);">
+                                  <span class="item ui checkbox" id="showSkeleton" style="margin-left:10px;">
+                                    <label style="color: #d3d3d3;">SHOW Skeleton</label>
+                                    <input type="checkbox">
+                                  </span>
+                                  <span class="item ui checkbox" id="showGrid" style="margin-left:10px;">
+                                    <label style="color: #d3d3d3;">SHOW Grid</label>
+                                    <input type="checkbox">
+                                  </span>
+                                  <span class="item ui checkbox" id="showBackground" style="margin-left:10px;">
+                                    <label style="color: #d3d3d3;">SHOW Background image</label>
+                                    <input type="checkbox">
+                                  </span>
+                          </div>
+                        </span>
+                        <span class="compact ui icon" id="full_screen" style="margin-left:5px;">
+                            <i class="expand circle icon" style="color: #d3d3d3;"></i>
+                        </span>
+                  </span>
                 </div>
               </div>
-          </div>
       </div>
     </div>
     <div class="info">
@@ -92,7 +104,16 @@
   <script src="./public/js/index.js"></script>
 
   <script>
-    $('#showSkeleton')
+      $('.dropdown')
+      .dropdown({
+        direction: 'upward',
+        transition: 'fade up',
+        on: 'click',
+        
+      })
+    ;
+
+  $('#showSkeleton')
   .checkbox()
   .first().checkbox({
     onChecked: function() {
@@ -102,7 +123,7 @@
       nonShowSkeleton();
     }
   });
-      $('#showGrid')
+  $('#showGrid')
   .checkbox()
   .first().checkbox({
     onChecked: function() {
@@ -112,14 +133,25 @@
       nonShowGrid();
     }
   });
+  $('#showBackground')
+  .checkbox()
+  .first().checkbox({
+    onChecked: function() {
+      showbg();
+    },
+    onUnchecked: function() {
+      nonshowbg();
+    }
+  });
   $('.viewer').hover(function(){
     $('#infor').css( "visibility","visible");
-    $('.stats').css( "visibility","visible");
+    $('.stats').css( "visibility","null");
   },
   function(){
     $('#infor').css("visibility","hidden");
     $('.stats').css("visibility","hidden");
   });
+
   </script>
 	</body>
 </html>

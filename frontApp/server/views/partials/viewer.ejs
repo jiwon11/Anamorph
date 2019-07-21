@@ -29,7 +29,11 @@
                     <input id="page-user-id" type="hidden" value="<%= page.user.id %>">
                     <input id="page-id" type="hidden" value="<%= page.id %>">
                     <input id="Myname" type="hidden" value="<%= page.user.username %>">
-                    <img src="<%= page.user.img %>" class="ui circular small image" style="margin-right : 10px; cursor:pointer;" onclick="location.href='/users/<%=page.user.username%>';">
+                    <% if(user.img){ %>
+                        <img src="<%= page.user.img %>" class="ui circular small image" style="margin-right : 10px; cursor:pointer;" onclick="location.href='/users/<%=page.user.username%>';">
+                    <% } else {%>
+                        <img src="<%= gravatar %>" class="ui circular small image" style="margin-right : 10px; cursor:pointer;" onclick="location.href='/users/<%=page.user.username%>';">
+                    <% } %>
                     <%= page.user.username %>
                     <% if(user && user.id === page.user.id) {%>
                     <div class="ui buttons" style="margin-left : 30px;">

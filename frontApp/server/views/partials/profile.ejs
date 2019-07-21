@@ -1,6 +1,11 @@
 <div class="userInfo" style="margin-top:10px;padding:0 150px 0 150px;">
 <h1 class="ui header" style="margin-left:30px;display:inline-block;">
-  <img src="<%=result_user.img%>" class="ui rounded image" style="margin:10px;">
+  
+  <% if(user.img){ %>
+              <img src="<%= user.img %>" style="margin:10px;">
+              <% } else {%>
+              <img src="<%= gravatar %>" style="margin:10px;">
+              <% } %>
   <%=result_user.username%>
   <div class="content">
   <p class="sub header">Followers <%=result_user.Followers.length%></p>

@@ -10,6 +10,7 @@
     
     <% if(user && user.id) {%>
     <%- include('../partials/LoginHeader') %> 
+    <%- include('../partials/cloudStorageBody.ejs') %>
     <%} else {%>
       <%- include('../partials/nonLoginHeader') %> 
       <%- include('../partials/firstHome') %>

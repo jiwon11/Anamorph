@@ -720,6 +720,42 @@ $('.menu .item')
   .tab()
 ;
 
+var modelTitle = document.querySelector('.modelTitle');
+function check(box) {
+  var obj = document.getElementsByName("checkbox");
+  for(var i=0; i<obj.length; i++){
+    if(obj[i] != box) {
+      obj[i].checked = false;
+    }
+  }
+  if(box.checked == true) {
+    modelTitle.innerHTML=`${box.value}`;
+  } else {
+    modelTitle.innerHTML=`Model`;
+  }
+}
+var toReflexBtn = document.querySelector('#toReflexBtn');
+toReflexBtn.addEventListener('click', function () {
+  var title = this.childNodes[3].textContent;
+  if(title==="Model"){
+    console.log("pass");
+  } else {
+    console.log(title);
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        console.log(xhr.responseText);
+        location.reload();
+        } else {
+          console.error(xhr.responseText);
+        }
+    };
+    xhr.open('POST', `/cloudStorage/postReflex`);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({modelTitle:title}));
+  }
+});
+
 </script>
 
 </body>
