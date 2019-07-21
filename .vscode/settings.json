@@ -27,6 +27,7 @@
     },
     "jshint.options": {
         "esnext": true,
+        
     },
     "html.autoClosingTags": true,
     "html.suggest.html5": true,

@@ -9,7 +9,6 @@ const infor = document.querySelector('#infor');
 const width  = 1280;//window.innerWidth;
 const height = 720;//window.innerHeight;
 
-
 var modelduration = 0;
 var playtime = 0;
 // Create renderer, add to DOM
