@@ -1,0 +1,75 @@
+{
+    "editor.fontSize": 18,
+    "editor.fontFamily": "Hack, Menlo, Monaco, 'Courier New', monospace",
+    "outline.problems.colors": true,
+    "outline.icons": true,
+    "beautify.language": {
+        "js": {
+            "type": [
+                "javascript",
+                "json",
+                "jsonc"
+            ],
+            "filename": [
+                ".jshintrc",
+                ".jsbeautifyrc"
+            ]
+        },
+        "css": [
+            "css",
+            "less",
+            "scss"
+        ],
+        "html": [
+            "htm",
+            "html"
+        ]
+    },
+    "jshint.options": {
+        "esnext": true,
+    },
+    "html.autoClosingTags": true,
+    "html.suggest.html5": true,
+    "workbench.iconTheme": "material-icon-theme",
+    "terminal.integrated.fontSize": 14,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+        "source.organizeImports": true,
+    },
+        "mssql.maxRecentConnections": 5,
+        "mssql.connections":[],
+        "mssql.shortcuts": {
+            "event.toggleResultPane": "ctrl+alt+r",
+            "event.toggleMessagePane": "ctrl+alt+y",
+            "event.prevGrid": "ctrl+up",
+            "event.nextGrid": "ctrl+down",
+            "event.copySelection": "ctrl+c",
+            "event.maximizeGrid": "",
+            "event.selectAll": "",
+            "event.saveAsJSON": "",
+            "event.saveAsCSV": "",
+            "event.saveAsExcel": ""
+        },
+        "mssql.messagesDefaultOpen": true,
+        "mssql.logDebugInfo": false,
+        "mssql.intelliSense.enableIntelliSense": true,
+        "mssql.intelliSense.enableErrorChecking": true,
+        "mssql.intelliSense.enableSuggestions": true,
+        "mssql.intelliSense.enableQuickInfo": true,
+        "mssql.intelliSense.lowerCaseSuggestions": false,
+        "mssql.resultsFontFamily": "-apple-system,BlinkMacSystemFont,Segoe WPC,Segoe UI,HelveticaNeue-Light,Ubuntu,Droid Sans,sans-serif",
+        "mssql.resultsFontSize": 13,
+        "mssql.copyIncludeHeaders": false,
+        "mssql.copyRemoveNewLine" : true,
+        "mssql.splitPaneSelection": "next",
+        "mssql.format.alignColumnDefinitionsInColumns": false,
+        "mssql.format.datatypeCasing": "none",
+        "mssql.format.keywordCasing": "none",
+        "mssql.format.placeCommasBeforeNextStatement": false,
+        "mssql.format.placeSelectStatementReferencesOnNewLine": false,
+        "mssql.applyLocalization": false,
+        "mssql.query.displayBitAsNumber": true,
+        "mssql.persistQueryResultTabs": false,
+        "git.ignoreLimitWarning": true,
+       
+}
