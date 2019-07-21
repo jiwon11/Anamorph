@@ -24,7 +24,7 @@ router.get('/', isLoggedIn ,(req, res, next) => {
   .then (async (pages) => {
           const tags = await Hashtag.findAll({ });
           res.render('index', {
-              title : 'Anamorph',
+              title : 'Viewport',
               pages : pages,
               user : req.user,
               gravatar: gravatar.url(req.user.email,{s:'80',r:'x',d:'retro'},true),
