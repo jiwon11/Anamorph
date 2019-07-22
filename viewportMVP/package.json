@@ -1,0 +1,25 @@
+{
+  "name": "viewportmvp",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "mysql2": "^1.6.5",
+    "semantic-ui": "^2.4.2",
+    "sequelize": "^5.10.1",
+    "fomantic-ui": "^2.7.5",
+    "fomantic-ui-css": "^2.7.5",
+    "jquery": "^3.4.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}

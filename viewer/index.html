@@ -69,21 +69,21 @@
       </div>
     </div>
     <div class="info">
-    <div class="stage" id="stage" style="display:inline;">
-      <h2 class="ui header" style="display:inline;">
-        <i class="film icon"></i>
-        <div class="content" id="animeName">
-      
-        </div>
-      </h2>
-      <div class="progress">
-          <div class="modifyTimeScale" style="margin-top: 10px;">
-            <label style="margin-right:5px;">modify Time Scale (0~x2)</label>
-            <input id="TimeScaleInputId" type="range" min="0" max="2" value="1" step="0.01" oninput="modifyTimeScale(this.value);TimeScaleOutputId.value = TimeScaleInputId.value;">
-            <output id="TimeScaleOutputId" style="margin-left:5px;">1</output>
+      <div class="stage" id="stage" style="display:inline;">
+        <h2 class="ui header" style="display:inline;">
+          <i class="film icon"></i>
+          <div class="content" id="animeName">
+          
           </div>
-        </div>
-        </div>
+        </h2>
+        <div class="progress">
+            <div class="modifyTimeScale" style="margin-top: 10px;">
+              <label style="margin-right:5px;">modify Time Scale (0~x2)</label>
+              <input id="TimeScaleInputId" type="range" min="0" max="2" value="1" step="0.01" oninput="modifyTimeScale(this.value);TimeScaleOutputId.value = TimeScaleInputId.value;">
+              <output id="TimeScaleOutputId" style="margin-left:5px;">1</output>
+            </div>
+          </div>
+          </div>
       </div>
     </div>
 
@@ -99,8 +99,8 @@
   <!-- library to handle glTF -->
   <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
   <script src="./public/js/stats.min.js"></script>
-  <script src="./public/js/TimelinerController.js"></script>
-  <script src="./public/js/timeliner_gui.min.js"></script>
+  <!--<script src="./public/js/TimelinerController.js"></script>
+  <script src="./public/js/timeliner_gui.min.js"></script>-->
   <script src="./public/js/index.js"></script>
 
   <script>
