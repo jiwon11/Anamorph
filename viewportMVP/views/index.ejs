@@ -4,6 +4,7 @@
     <title><%= title %></title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+     <link rel="canonical" href="http://localhost:3000/">
   </head>
   <body>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -14,120 +15,118 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.106.2/examples/js/controls/OrbitControls.js"></script>
     <!-- library to handle glTF -->
     <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.106.2/examples/js/loaders/DRACOLoader.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js"></script>
+    <script src="/javascripts/jszip.js"></script>
+    <script src="/javascripts/jszip-utils.min.js"></script>
+
     <header>
       <h1><%= title %></h1>
       <p>Welcome to <%= title %></p>
     </header>
-    <main>
-      <div class="webViewer">
-        <div class="viewer">
-          <div class="infor">
-            <input id="timeSlider" value="" step="0.01" type="range" oninput="startAt(this.value)"/>
-              <div class="processor">
-              <button class="compact ui icon button" id="anime_button" value="pause">
-                  <i class="pause circle icon"></i>
-                </button>
-                <span class="process"> 
-                  <p id="processNow"></p>
-                </span>
-                  <span class="ShowControl">
-                    <span class="ui icon bottom dropdown">
-                        <i class="cog icon"></i>
-                          <div class="menu" id="menuCog">
-                                  <span class="item ui checkbox" id="showSkeleton">
-                                    <label>SHOW Skeleton</label>
-                                    <input type="checkbox">
-                                  </span>
-                                  <span class="item ui checkbox" id="showGrid">
-                                    <label>SHOW Grid</label>
-                                    <input type="checkbox">
-                                  </span>
-                                  <span class="item ui checkbox" id="showBackground">
-                                    <label>SHOW Background image</label>
-                                    <input type="checkbox">
-                                  </span>
-                          </div>
-                        </span>
-                        <span class="compact ui icon" id="full_screen">
-                            <i class="expand circle icon"></i>
-                        </span>
-                  </span>
-                </div>
-          </div>
+    <section>
+      <button class="gltfUploadBtn ui button">GLTF Upload</button>
+<!--GLTF Upload modal Start-->
+      <div class="ui GLTF fullscreen modal" id="upload-modal">
+        <i class="close icon"></i>
+        <div class="header">
+          GLTF Upload
         </div>
-      </div>
-      <div class="info">
-        <div class="stage" id="stage" style="display:inline;">
-          <h2 class="ui header" style="display:inline;">
-            <i class="film icon"></i>
-            <div class="content" id="animeName">
-      
-            </div>
-          </h2>
-          <div class="progress">
-              <div class="modifyTimeScale" style="margin-top: 10px;">
-                <label style="margin-right:5px;">modify Time Scale (0~x2)</label>
-                <input id="TimeScaleInputId" type="range" min="0" max="2" value="1" step="0.01" oninput="modifyTimeScale(this.value);TimeScaleOutputId.value = TimeScaleInputId.value;">
-                <output id="TimeScaleOutputId" style="margin-left:5px;">1</output>
+        <div class="image scroll content">
+          <div class="image">
+            <div class="ui large image" >
+              <div id="gltfPreview" src="" alt="preview">
               </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
+          <div class="gltf Upload description">
+            <form class="ui form" action="/gltfUpload" method="post" enctype="multipart/form-data">
+              <input id="gltf-url" type="hidden" name="url">
+                <div class="field">
+                  <label>Title</label>
+                    <input id="assetTitle" type="text" name="title">
+                </div>
+                <div class="field">
+                  <label>Author</label>
+                    <input id="assetAuthor" type="text" name="author" value="" readonly>
+                </div>
+                <div class="field">
+                  <label>Description</label>
+                    <textarea rows=""name="description" maxlength="300" onkeydown="resize(this)" onkeyup="resize(this)"style="resize: none;"></textarea>
+                </div>
+                <div class="field">
+                  <label class="gltf-label" for="gltf">GLTF Upload</label>
+                    <input id="gltfInp" type="file" webkitdirectory directory multiple>
+                </div>
+                <div class="field">
+                  <div class="ui mini horizontal statistic" style="display:hidden" id='fileSize'>
+                    <div class="value" id='fileSizeValue'>
+                    </div>
+                  </div>
+                </div>
+                <div class="actions">
+                  <button class="ui positive right labeled icon button" type="submit" id="gltfUploadBtn">
+                    Submit
+                    <i class="checkmark icon"></i>
+                  </button>
+                </div>
+              </form>
+          </div>
+      </div>      
+<!--GLTF Upload modal Finish--> 
+    </section>
+    <main>
+      
     </main>
     <aside>
 
     </aside>
-    <script> const model = `<%=model%>`;</script>
-    <script src="/javascripts/index.js"> </script>
-    <script>
-    //jquery for webviewer 
-      $('.dropdown')
-      .dropdown({
-        direction: 'upward',
-        transition: 'fade up',
-        on: 'click',
-      })
+  <script> 
+    $('.ui.GLTF.fullscreen.modal')
+    .modal('attach events', '.gltfUploadBtn.ui.button', 'show')
+     .modal({
+    observeChanges: true
+    })
     ;
-  $('#showSkeleton')
-  .checkbox()
-  .first().checkbox({
-    onChecked: function() {
-      showSkeleton();
-    },
-    onUnchecked: function() {
-      nonShowSkeleton();
+    function resize(obj) {
+    obj.style.height = "1px";
+    obj.style.height = (12+obj.scrollHeight)+"px";
+    };
+  
+  var formData = new FormData();
+  document.getElementById('gltfInp').addEventListener('change', function (evt) {
+    $.getScript('/javascripts/preview.js');
+    var zip = new JSZip();
+    var relativePath = this.files[0].webkitRelativePath;
+    var folder = relativePath.split("/");
+    const folderName = folder[0];
+    var gltfZip = zip.folder(folderName);
+    for (var i = 0; i < this.files.length; i++) {
+        var f = this.files[i];
+        gltfZip.file(f.webkitRelativePath, f);
     }
+    var content = gltfZip.generateAsync({type:"blob"})
+    .then(function(content){
+      formData.append('gltf', content,`${folderName}.zip`);
+      console.log(formData.get('gltf'));
+      var xhr = new XMLHttpRequest();
+      xhr.onload = function() {
+        if (xhr.status === 200 || xhr.status === 201) {
+          var url = JSON.parse(xhr.responseText).url;
+          document.getElementById('gltf-url').value = url;
+          var filesize = JSON.parse(xhr.responseText).size;
+          document.getElementById('fileSizeValue').innerHTML = filesize;
+          document.getElementById('filseSize').style.display = 'inline';
+        } else {
+          console.error(xhr.responseText);
+        }
+      };
+      xhr.open('POST', '/gltfZipUpload');
+      xhr.send(formData);
+    });
   });
-  $('#showGrid')
-  .checkbox()
-  .first().checkbox({
-    onChecked: function() {
-      showGrid();
-    },
-    onUnchecked: function() {
-      nonShowGrid();
-    }
+  document.getElementById('gltfUploadBtn').addEventListener('click', function () {
   });
-  $('#showBackground')
-  .checkbox()
-  .first().checkbox({
-    onChecked: function() {
-      showbg();
-    },
-    onUnchecked: function() {
-      nonshowbg();
-    }
-  });
-  $('.viewer').hover(function(){
-    $('.infor').css( "visibility","visible");
-    $('.stats').css( "visibility","visible");
-  },
-  function(){
-    $('.infor').css("visibility","hidden");
-    $('.stats').css("visibility","hidden");
-  });
-    </script>
+  </script>
   </body>
 </html>

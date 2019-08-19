@@ -141,7 +141,7 @@ const animation = () => {
       processNow.innerHTML = `${processTime.toFixed(2)} / ${modelduration.toFixed(2)}`;
     }
     timeSlider.value=processTime.toFixed(2);
-    console.log();
+
     stats.update();
   }
 

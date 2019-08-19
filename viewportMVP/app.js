@@ -1,26 +1,54 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const morgan = require('morgan');
+const session = require('express-session');
+const flash = require('connect-flash');
+const passport = require('passport');
+const bodyParser = require('body-parser');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var sequelize = require('./models').sequelize;
+require('dotenv').config();
 
-var app = express();
-sequelize.sync();
+const indexRouter = require('./routes');
+const usersRouter = require('./routes/users');
+
+
+const { sequelize } = require('./models');
+
+const app = express();
+sequelize.sync({});
+
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, './views'));
 app.set('view engine', 'ejs');
-app.set('port', process.env.PORT || 3000);
+app.engine('html',require('ejs').renderFile);
+app.set('port',process.env.PORT || 3000);
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(morgan('dev'));
+app.use(express.static(path.join(__dirname,'public')));
+app.use('/uploads', express.static(path.join(__dirname,'uploads')));
+app.use('/gltf', express.static(path.join(__dirname,'uploads','gltf')));
+app.use('/backgroundImg', express.static(path.join(__dirname,'uploads','backgroundImg')));
+
+app.use(bodyParser.json());
+app.use(bodyParser.raw());
+app.use(bodyParser.text());
+app.use(bodyParser.urlencoded({extended : false}));
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(session({
+  resave : false,
+  secret : process.env.COOKIE_SECRET,
+  cookie : {
+    httpOnly : true,
+    secure : false,
+  },
+}));
+app.use(flash());
+app.use(passport.initialize()); //req객체에 passport 설정 심음
+app.use(passport.session()); // req.session 객체에 passport 정보를 저장 => req.session 객체는 express-session에서 생성하므로 passport 미들웨어는 express-session 미들웨어보다 뒤에 연결해야 함.
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -41,4 +69,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+app.listen(app.get('port'),() => {
+  console.log(app.get('port'),'번 포트에서 대기중');
+});

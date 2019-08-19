@@ -22,7 +22,7 @@ webViewer.appendChild(viewer);
 // Create scenes, create and add cameras, create and add lights
 const scene  = new THREE.Scene();
 function showbg() {
-  scene.background = new THREE.TextureLoader().load('https://images.pexels.com/photos/1205301/pexels-photo-1205301.jpeg');
+  scene.background = new THREE.TextureLoader().load('/../viewportMVP/uploads/backgroundImg/IMG_10141564134956277.jpg');
 }
 function nonshowbg() {
   scene.background = null;

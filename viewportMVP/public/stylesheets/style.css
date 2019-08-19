@@ -82,3 +82,12 @@ a {
 .expand.circle.icon {
   color: #d3d3d3;
 }
+
+.ui.large.image{
+  width: 1280px;
+  height: 720px;
+}
+
+#gltfPreview {
+  position: relative;
+}
