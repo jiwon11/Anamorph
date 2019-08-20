@@ -2,7 +2,7 @@ var express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-
+const { Post } = require('../models');
 var router = express.Router();
 
 fs.readdir('uploads/backgroundImg', (error)=> {
@@ -40,19 +40,15 @@ router.get('/', function(req, res, next) {
     });
   });
 
-var cpUpload = upload.fields([{ name: 'backgroundImg'}, { name: 'gltf'}]);
-router.post('/gltf', cpUpload, function (req, res, next) {
-  console.log(req.files);
-  res.json({ 
-    
-  });
-  
-  //res.json({ url : `/img/${req.file.filename}`});
-});
 
 router.post('/gltfUpload',upload2.none(),async (req, res, next) => {
     try {
         console.log(req.body);
+        const post = await Post.create({
+          title : req.body.title,
+          description : req.body.description,
+          gltf_file : req.body.url,
+        });
         res.redirect('/');
     } catch (error) {
         console.error(error);
