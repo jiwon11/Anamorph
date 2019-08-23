@@ -12,5 +12,6 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         timestamps : true,
+        timezone: 'utc',
     });
 };

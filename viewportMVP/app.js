@@ -17,7 +17,7 @@ const usersRouter = require('./routes/users');
 const { sequelize } = require('./models');
 
 const app = express();
-sequelize.sync({});
+sequelize.sync({ force: true });
 
 
 // view engine setup
@@ -31,7 +31,7 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname,'public')));
 app.use('/uploads', express.static(path.join(__dirname,'uploads')));
 app.use('/gltf', express.static(path.join(__dirname,'uploads','gltf')));
-app.use('/backgroundImg', express.static(path.join(__dirname,'uploads','backgroundImg')));
+app.use('/previewImg', express.static(path.join(__dirname,'uploads','previewImg')));
 
 app.use(bodyParser.json());
 app.use(bodyParser.raw());

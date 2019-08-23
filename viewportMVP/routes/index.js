@@ -2,13 +2,13 @@ var express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const { Post } = require('../models');
+const { Post,Model } = require('../models');
 var router = express.Router();
 
-fs.readdir('uploads/backgroundImg', (error)=> {
+fs.readdir('uploads/previewImg', (error)=> {
   if(error) {
       console.error('uploads 폴더가 없어 폴더를 생성합니다.');
-      fs.mkdirSync('uploads/backgroundImg');
+      fs.mkdirSync('uploads/previewImg');
   }
 });
 fs.readdir('uploads/gltf', (error)=> {
@@ -21,7 +21,7 @@ fs.readdir('uploads/gltf', (error)=> {
 const upload = multer({
   storage : multer.diskStorage({
       destination(req, file, cb) {
-          cb(null,`uploads/gltf/`);
+          cb(null,`uploads/${file.fieldname}/`);
       },
       filename(req, file, cb) {
           const ext = path.extname(file.originalname);
@@ -33,13 +33,39 @@ const upload = multer({
 
 const upload2 = multer();
 /* GET home page. */
-
 router.get('/', function(req, res, next) {
-    res.render('index', { 
-      title: `GLTF Upload | Viewport`, 
+    Post.findAll({
+      /*
+      include : [{
+          model : User,
+          attributes : ['id', 'username','img'],
+      }, {
+          model : Hashtag,
+          attributes : ['title'],
+      }, {
+          model : Comment,
+      },{
+          model : Like,
+      },],
+      */
+      order : [['createdAt','DESC']],
+  })
+  .then (async (pages) => {
+          //const tags = await Hashtag.findAll({ });
+          res.render('index', {
+              title : `GLTF Upload | Viewport`,
+              pages : pages,
+              //user : req.user,
+              //gravatar: gravatar.url(req.user.email,{s:'80',r:'x',d:'retro'},true),
+              //tags : tags,
+              loginError : req.flash('loginError'),
+          });
+  })
+    .catch((error) => {
+        console.error(error);
+        next(error);
     });
-  });
-
+});
 
 router.post('/gltfUpload',upload2.none(),async (req, res, next) => {
     try {
@@ -47,7 +73,8 @@ router.post('/gltfUpload',upload2.none(),async (req, res, next) => {
         const post = await Post.create({
           title : req.body.title,
           description : req.body.description,
-          gltf_file : req.body.url,
+          gltf_file : req.body.gltfUrl,
+          preview_img : req.body.previewImg,
         });
         res.redirect('/');
     } catch (error) {
@@ -55,19 +82,13 @@ router.post('/gltfUpload',upload2.none(),async (req, res, next) => {
         next(error);
     }
 });
-router.post('/gltfZipUpload',upload.single('gltf'),async (req, res, next) => {
+router.post('/gltfZipUpload',upload.fields([{ name: 'gltf' }, { name: 'previewImg' }]),async (req, res, next) => {
   try {
-      console.log(req.file);
-      var fileSize;
-      if(req.file.size<1000000) {
-        fileSize = req.file.size/1000;
-      } else {
-        fileSize = req.file.size/1000000;
-        fileSize = `${fileSize.toFixed(1)} MB`;
-      }
+      var gltf = req.files.gltf[0];
+      var previewImg = req.files.previewImg[0];
       res.json({ 
-        url : `/${req.file.path}`,
-        size : `${fileSize}`,
+        gltfUrl : `/${gltf.path}`,
+        previewImgUrl : `/${previewImg.path}`,
       });
   } catch (error) {
       console.error(error);

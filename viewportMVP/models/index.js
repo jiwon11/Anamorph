@@ -13,8 +13,8 @@ db.Model = require('./model')(sequelize,Sequelize);
 db.Post = require('./post')(sequelize,Sequelize);
 /*
 post와 model(gltf)간의 관계 정의
+db.Post.belongsTo(db.Model, {foreignKey : 'Model', targetKey : 'id'});
+db.Model.hasMany(db.Post, {foreignKey : 'Post', sourceKey : 'id'});
 */
-db.Post.belongTo(db.Model, {foreignKey : 'model', targetKey : 'id'});
-db.Model.hasMany(db.Post, {foreignKey : 'model', sourceKey : 'id'});
 
 module.exports = db;

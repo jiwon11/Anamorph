@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
         title : {
             type:DataTypes.STRING(100),
             allowNull : false,
-            unique : true,
+            unique : false,
         },
         description : {
             type:DataTypes.STRING(300),
@@ -14,8 +14,14 @@ module.exports = (sequelize, DataTypes) => {
             type:DataTypes.STRING(100),
             allowNull : false,
             unique : true,
+        },
+        preview_img : {
+            type:DataTypes.STRING(100),
+            allowNull : false,
+            unique : true,
         }
     }, {
         timestamps : true,
+        timezone: 'utc',
     });
 };

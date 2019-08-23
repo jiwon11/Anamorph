@@ -12,11 +12,11 @@ const height = 720;//window.innerHeight;
 var modelduration = 0;
 var playtime = 0;
 // Create renderer, add to DOM
-const renderer = new THREE.WebGLRenderer({alpha:true});
+const renderer = new THREE.WebGLRenderer({alpha:true, preserveDrawingBuffer: true});
 renderer.setSize(width, height);
 renderer.setClearColor("#1f1f1f", 1.0);
 gltfPreview.appendChild(renderer.domElement);
-
+console.log(gltfPreview);
 // Create scenes, create and add cameras, create and add lights
 const scene  = new THREE.Scene();
 const light  = new THREE.AmbientLight(0xffffff, 1);
@@ -67,13 +67,16 @@ gltfLoader.load(gltfUrl,(gltf) => {
   document.getElementById('assetAuthor').value = gltf.asset.extras.author;
   const object = gltf.scene;
   object.castShadow = true;
-  object.receiveShadow =  true;
+  object.receiveShadow = true;
+  if(object.position.x ===0&&object.position.y===0&&object.position.z===0) {
+    object.position.set(0,-7,0);
+  }
   if (gltf.cameras && gltf.cameras.length){
     camera = gltf.cameras[0];
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     }else{
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-    camera.position.set( 0, 15, 25 );
+    camera.position.set( 0, 9, 20 );
     controls = new THREE.OrbitControls(camera, renderer.domElement);
   }
   controls.userPan = false;
@@ -111,7 +114,7 @@ stats.domElement.style.display="inline";
 stats.domElement.style.zi=1000;
 stats.domElement.classList.add("stats");
 stats.domElement.style.left='0px';
-gltfPreview.appendChild( stats.domElement );
+//gltfPreview.appendChild( stats.domElement );
 
 const animation = () => {
   renderer.gammaInput = true;
