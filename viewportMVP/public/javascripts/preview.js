@@ -47,6 +47,7 @@ if(files_length===1) {
   const manager = new THREE.LoadingManager();
   var objectURLs = [];
   manager.setURLModifier(( url ) => {
+  console.log(url);
   var normalizedURL = url.replace('./',`${rootPath}/`);
   bloburl = URL.createObjectURL( blobs[ normalizedURL ] );
   objectURLs.push( bloburl );

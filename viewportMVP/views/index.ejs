@@ -79,8 +79,20 @@
     </section>
     <main>
       <%pages.forEach((page) => {%>
-      <img src="<%=page.preview_img%>" alt='Thumbnail' style="width:210px;height:120px;">
-      <p><%=page.title%><br><%=page.preview_img%><br><%=page.gltf_file%><br><%=page.description%><br><%=page.createdAt%></p>
+      <div class="ui card">
+        <a class="image" href="/post/<%=page.id%>">
+          <img src="<%=page.preview_img%>" alt='Thumbnail'>
+        </a>
+        <div class="content">
+          <a class="header" href="/post/<%=page.id%>"><%=page.title%></a>
+          <div class="description">
+            <p><%=page.description%></p>
+          </div>
+          <div class="meta">
+            <a><%=page.createdAt%></a>
+          </div>
+        </div>
+      </div>
       <%});%>
     </main>
     <aside>
@@ -108,10 +120,14 @@
     var gltfZip = zip.folder(folderName);
     for (var i = 0; i < this.files.length; i++) {
         var f = this.files[i];
-        gltfZip.file(f.webkitRelativePath, f);
+        gltfZip.file(f.webkitRelativePath, f,{
+          comment: f.webkitRelativePath,
+          type:"blob"
+      });
     }
     var content = gltfZip.generateAsync({type:"blob"})
     .then(function(content){
+      console.log(content);
       formData.append('gltf', content,`${folderName}.zip`);
       html2canvas(document.querySelector('#gltfPreview'), {
         useCORS: true, // 다른사이트의리소스가있을때활성화(그러나...Access-Control-Allow-Origin 필요)
@@ -138,11 +154,9 @@
               xhr.open('POST', '/gltfZipUpload');
               xhr.send(formData);
             });
-        }
+          }
       });
     });
-  });
-  document.getElementById('gltfUploadBtn').addEventListener('click', function () {
   });
   </script>
   </body>

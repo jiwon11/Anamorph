@@ -12,12 +12,13 @@ require('dotenv').config();
 
 const indexRouter = require('./routes');
 const usersRouter = require('./routes/users');
+const postRouter = require('./routes/post');
 
 
 const { sequelize } = require('./models');
 
 const app = express();
-sequelize.sync({ force: true });
+sequelize.sync({});
 
 
 // view engine setup
@@ -52,6 +53,7 @@ app.use(passport.session()); // req.session 객체에 passport 정보를 저장 
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/post',postRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
