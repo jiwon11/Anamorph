@@ -76,12 +76,12 @@ console.log(blobs);
   const grid   = new THREE.GridHelper(50,50);
   var gltfLoader;
   var files_length = Object.keys(blobs).length;
+  const manager = new THREE.LoadingManager();
+  var objectURLs = [];
   if(files_length===1) {
-    gltfUrl = URL.createObjectURL(blobs[gltfName]);
+    gltfName = blobs[gltfName];
     gltfLoader = new THREE.GLTFLoader();
   } else {
-      const manager = new THREE.LoadingManager();
-      var objectURLs = [];
       manager.setURLModifier(( url ) => {
         console.log(`gltfLoader Manager's url : ${url}`);
         console.log(`Containing a URL representing uri's blobs : ${blobs[ url ]}`);

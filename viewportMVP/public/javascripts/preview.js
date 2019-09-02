@@ -1,5 +1,5 @@
 const gltfPreview = document.querySelector('#gltfPreview');
-var gltfUrl, camera, controls;
+var gltfUrl;
 var uploadDataGltf = document.getElementById('gltfInp').files;
 for(var i=0; i<uploadDataGltf.length;i++) {
   if((uploadDataGltf[i]['name'].match(/\.(gltf|glb)$/))) {
@@ -19,6 +19,16 @@ gltfPreview.appendChild(renderer.domElement);
 console.log(gltfPreview);
 // Create scenes, create and add cameras, create and add lights
 const scene  = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000 );
+var controls = new THREE.OrbitControls( camera, renderer.domElement );
+controls.userPan = false;
+controls.userPanSpeed = 0.0;
+controls.maxDistance = 10000.0;
+controls.minDistance = 1.0;
+controls.maxPolarAngle = Math.PI * 1;
+controls.autoRotate = false;
+controls.autoRotateSpeed = 1.0;
+controls.screenSpacePanning = true;
 const light  = new THREE.AmbientLight(0xffffff, 1);
 scene.add(light);
 
@@ -62,10 +72,23 @@ gltfLoader.setDRACOLoader( new THREE.DRACOLoader() );
 THREE.DRACOLoader.getDecoderModule();
 gltfLoader.load(gltfUrl,(gltf) => {
   console.log(gltf);
-  if(document.getElementById('assetTitle').value.length === 0) {
-    document.getElementById('assetTitle').value = gltf.asset.extras.title;
+  if(gltf.asset.hasOwnProperty('extras')) {
+    if(gltf.asset.extras.hasOwnProperty('title')) {
+      if(document.getElementById('assetTitle').value.length === 0) {
+        document.getElementById('assetTitle').value = gltf.asset.extras.title;
+      }
+    } else {
+      document.getElementById('assetTitle').value = gltfName;
+    }
+    if(gltf.asset.extras.hasOwnProperty('author')) {
+      document.getElementById('assetAuthor').value = gltf.asset.extras.author;
+    } else {
+      document.getElementById('assetAuthor').value = 'userName';
+    }
+  } else {
+    document.getElementById('assetTitle').value = gltfName;
+    document.getElementById('assetAuthor').value = 'userName';
   }
-  document.getElementById('assetAuthor').value = gltf.asset.extras.author;
   const object = gltf.scene;
   object.castShadow = true;
   object.receiveShadow = true;
@@ -74,20 +97,9 @@ gltfLoader.load(gltfUrl,(gltf) => {
   }
   if (gltf.cameras && gltf.cameras.length){
     camera = gltf.cameras[0];
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
-    }else{
-    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+  }else{
     camera.position.set( 0, 9, 20 );
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
   }
-  controls.userPan = false;
-  controls.userPanSpeed = 0.0;
-  controls.maxDistance = 10000.0;
-  controls.minDistance = 1.0;
-  controls.maxPolarAngle = Math.PI * 1;
-  controls.autoRotate = false;
-  controls.autoRotateSpeed = 1.0;
-  controls.screenSpacePanning = true;
   controls.update();
   camera.lookAt(object.position);
   skeleton = new THREE.SkeletonHelper( object );
@@ -121,6 +133,7 @@ const animation = () => {
   renderer.gammaInput = true;
   renderer.gammaOutput = true;
   renderer.render(scene, camera);
+  controls.update();
   if (mixer) {
     mixer.update(clock.getDelta());
     mixer._actions[0]; // accessor of model's animation(AnimationAction) :: paused: false, repetitions: Infinity control 

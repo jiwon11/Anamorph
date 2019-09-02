@@ -129,33 +129,35 @@
     .then(function(content){
       console.log(content);
       formData.append('gltf', content,`${folderName}.zip`);
-      html2canvas(document.querySelector('#gltfPreview'), {
-        useCORS: true, // 다른사이트의리소스가있을때활성화(그러나...Access-Control-Allow-Origin 필요)
-        onrendered: function(canvas) {
-            canvas.toBlob(function(blob) {
-              formData.append('previewImg', blob,`${folderName}.jpeg`);
-              for (var value of formData.values()) {
-                console.log(value);
-              }
-              var xhr = new XMLHttpRequest();
-              xhr.onload = function() {
-                if (xhr.status === 200 || xhr.status === 201) {
-                  console.log(JSON.parse(xhr.responseText));
-                  var gltfUrl = JSON.parse(xhr.responseText).gltfUrl;
-                  var previewImgUrl = JSON.parse(xhr.responseText).previewImgUrl;
-                  document.getElementById('gltf-url').value = gltfUrl;
-                  document.getElementById('preview-img').value = previewImgUrl;
-                  document.getElementById('previewImgUrl').src = previewImgUrl;
-                  document.getElementById('previewImg').style.display = 'inline';
-                } else {
-                  console.error(xhr.responseText);
+      setTimeout(function() {
+        html2canvas(document.querySelector('#gltfPreview'), {
+          useCORS: true, // 다른사이트의리소스가있을때활성화(그러나...Access-Control-Allow-Origin 필요)
+          onrendered: function(canvas) {
+              canvas.toBlob(function(blob) {
+                formData.append('previewImg', blob,`${folderName}.jpeg`);
+                for (var value of formData.values()) {
+                  console.log(value);
                 }
-              };
-              xhr.open('POST', '/gltfZipUpload');
-              xhr.send(formData);
-            });
-          }
-      });
+                var xhr = new XMLHttpRequest();
+                xhr.onload = function() {
+                  if (xhr.status === 200 || xhr.status === 201) {
+                    console.log(JSON.parse(xhr.responseText));
+                    var gltfUrl = JSON.parse(xhr.responseText).gltfUrl;
+                    var previewImgUrl = JSON.parse(xhr.responseText).previewImgUrl;
+                    document.getElementById('gltf-url').value = gltfUrl;
+                    document.getElementById('preview-img').value = previewImgUrl;
+                    document.getElementById('previewImgUrl').src = previewImgUrl;
+                    document.getElementById('previewImg').style.display = 'inline';
+                  } else {
+                    console.error(xhr.responseText);
+                  }
+                };
+                xhr.open('POST', '/gltfZipUpload');
+                xhr.send(formData);
+              });
+            }
+        });
+      }, 3000);
     });
   });
   </script>
