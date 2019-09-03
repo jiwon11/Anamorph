@@ -1,5 +1,5 @@
 const gltfPreview = document.querySelector('#gltfPreview');
-var gltfUrl;
+var gltfUrl, cameara, controls;
 var uploadDataGltf = document.getElementById('gltfInp').files;
 for(var i=0; i<uploadDataGltf.length;i++) {
   if((uploadDataGltf[i]['name'].match(/\.(gltf|glb)$/))) {
@@ -19,20 +19,10 @@ gltfPreview.appendChild(renderer.domElement);
 console.log(gltfPreview);
 // Create scenes, create and add cameras, create and add lights
 const scene  = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000 );
-var controls = new THREE.OrbitControls( camera, renderer.domElement );
-controls.userPan = false;
-controls.userPanSpeed = 0.0;
-controls.maxDistance = 10000.0;
-controls.minDistance = 1.0;
-controls.maxPolarAngle = Math.PI * 1;
-controls.autoRotate = false;
-controls.autoRotateSpeed = 1.0;
-controls.screenSpacePanning = true;
 const light  = new THREE.AmbientLight(0xffffff, 1);
 scene.add(light);
 
-const grid   = new THREE.GridHelper(50,50);
+camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
 var blobs = {};
 var gltfName;
@@ -72,6 +62,26 @@ gltfLoader.setDRACOLoader( new THREE.DRACOLoader() );
 THREE.DRACOLoader.getDecoderModule();
 gltfLoader.load(gltfUrl,(gltf) => {
   console.log(gltf);
+  const object = gltf.scene;
+  const gltfCamera = gltf.cameras[0].clone();
+  if (gltf.cameras && gltf.cameras.length){
+    console.log(gltfCamera);
+    camera.copy(gltfCamera,false);
+  }else{
+    camera.clone();
+    camera.position.set( 0, 9, 20 );
+  }
+  camera.lookAt(object.position);
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.userPan = false;
+  controls.userPanSpeed = 0.0;
+  controls.maxDistance = 10000.0;
+  controls.minDistance = 1.0;
+  controls.maxPolarAngle = Math.PI * 1;
+  controls.autoRotate = false;
+  controls.autoRotateSpeed = 1.0;
+  controls.screenSpacePanning = true;
+  controls.update();
   if(gltf.asset.hasOwnProperty('extras')) {
     if(gltf.asset.extras.hasOwnProperty('title')) {
       if(document.getElementById('assetTitle').value.length === 0) {
@@ -89,19 +99,11 @@ gltfLoader.load(gltfUrl,(gltf) => {
     document.getElementById('assetTitle').value = gltfName;
     document.getElementById('assetAuthor').value = 'userName';
   }
-  const object = gltf.scene;
   object.castShadow = true;
   object.receiveShadow = true;
   if(object.position.x ===0&&object.position.y===0&&object.position.z===0) {
     object.position.set(0,-7,0);
   }
-  if (gltf.cameras && gltf.cameras.length){
-    camera = gltf.cameras[0];
-  }else{
-    camera.position.set( 0, 9, 20 );
-  }
-  controls.update();
-  camera.lookAt(object.position);
   skeleton = new THREE.SkeletonHelper( object );
   skeleton.visible = false;
   scene.add( skeleton );
@@ -120,20 +122,11 @@ gltfLoader.load(gltfUrl,(gltf) => {
 
 const clock  = new THREE.Clock();
 let mixer;
-stats = new Stats();
-stats.domElement.style.position="absolute";
-stats.domElement.style.float="left";
-stats.domElement.style.display="inline";
-stats.domElement.style.zi=1000;
-stats.domElement.classList.add("stats");
-stats.domElement.style.left='0px';
-//gltfPreview.appendChild( stats.domElement );
 
 const animation = () => {
   renderer.gammaInput = true;
   renderer.gammaOutput = true;
   renderer.render(scene, camera);
-  controls.update();
   if (mixer) {
     mixer.update(clock.getDelta());
     mixer._actions[0]; // accessor of model's animation(AnimationAction) :: paused: false, repetitions: Infinity control 
