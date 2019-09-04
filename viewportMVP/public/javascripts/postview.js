@@ -184,13 +184,25 @@ console.log(blobs);
     animeName.innerHTML = `Animation : ${mixer._actions[0]._clip.name}`;
     if(anime_button.value==='pause') {
       anime_button.addEventListener('click', function () {
-        mixer._actions[0].paused=true;
+        if(mixer._actions.length>1) {
+          for(var i=0; i<mixer._actions.length;i++) {
+            mixer._actions[i].paused=true;
+          }
+        } else {
+          mixer._actions[0].paused=true;
+        }
         anime_button.value="restart";
         anime_button.innerHTML = `<i class="play circle icon"></i>`;
       });
     } else {
       anime_button.addEventListener('click', function () {
-        mixer._actions[0].paused=false;
+        if(mixer._actions.length>1) {
+          for(var i=0; i<mixer._actions.length;i++) {
+            mixer._actions[i].paused=false;
+          }
+        } else {
+          mixer._actions[0].paused=false;
+        }
         anime_button.value="pause";
         anime_button.innerHTML = `<i class="pause circle icon"></i>`;
       });
